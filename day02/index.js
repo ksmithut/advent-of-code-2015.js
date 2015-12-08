@@ -6,7 +6,7 @@ function sortNumbers(a, b) { return a - b; }
 
 function parseDimensions(str) {
   const [ length, width, height ] = str.match(DIMENSIONS_REGEX)
-    .slice(1, 3)
+    .slice(1, 4)
     .map((num) => parseInt(num, 10));
 
   return { length, width, height };
