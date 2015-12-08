@@ -4,6 +4,14 @@ const DIMENSIONS_REGEX = /^(\d*)x(\d*)x(\d*)/;
 
 function sortNumbers(a, b) { return a - b; }
 
+function parseDimensions(str) {
+  const [ length, width, height ] = str.match(DIMENSIONS_REGEX)
+    .slice(1, 3)
+    .map((num) => parseInt(num, 10));
+
+  return { length, width, height };
+}
+
 /**
  * The elves are running low on wrapping paper, and so they need to submit an
  * order for more. They have a list of the dimensions (length l, width w, and
@@ -41,10 +49,7 @@ function wrappingPaper(length, width, height) {
 
 export function part1(input) {
   return input.split('\n').reduce((total, line) => {
-    const [ , length, width, height ] = line
-      .match(DIMENSIONS_REGEX)
-      .slice(1, 3)
-      .map((num) => parseInt(num, 10));
+    const { length, width, height } = parseDimensions(line);
 
     return total + wrappingPaper(length, width, height);
   }, 0);
@@ -87,10 +92,7 @@ function ribbons(length, width, height) {
 
 export function part2(input) {
   return input.split('\n').reduce((total, line) => {
-    const [ , length, width, height ] = line
-      .match(DIMENSIONS_REGEX)
-      .slice(1, 3)
-      .map((num) => parseInt(num, 10));
+    const { length, width, height } = parseDimensions(line);
 
     return total + ribbons(length, width, height);
   }, 0);
