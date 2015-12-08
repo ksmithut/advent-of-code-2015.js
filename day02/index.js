@@ -1,48 +1,8 @@
 'use strict';
 
-var input = require('fs').readFileSync(__dirname + '/input.txt', 'utf8');
-
-var DIMENSIONS_REGEX = /^(\d*)x(\d*)x(\d*)/;
-
-function wrappingPaper(length, width, height) {
-  var lw = length * width;
-  var wh = width * height;
-  var hl = height * length;
-
-  var main = 2 * (lw + wh + hl);
-  var extra = [ lw, wh, hl ].sort(sortNumbers)[0];
-
-  return main + extra;
-}
-
-function ribbons(length, width, height) {
-  return [ length, width, height ]
-    .sort(sortNumbers)
-    .slice(0, 2)
-    .reduce(function(total, length) {
-      return total + (length * 2);
-    }, length * width * height);
-}
+const DIMENSIONS_REGEX = /^(\d*)x(\d*)x(\d*)/;
 
 function sortNumbers(a, b) { return a - b; }
-
-var total = input.split('\n').reduce(function(total, line) {
-  var pieces = line.match(DIMENSIONS_REGEX);
-
-  if (!pieces) return total;
-
-  var length = parseInt(pieces[1], 10);
-  var width = parseInt(pieces[2], 10);
-  var height = parseInt(pieces[3], 10);
-
-  total.wrappingPaper += wrappingPaper(length, width, height);
-  total.ribbons += ribbons(length, width, height);
-
-  return total;
-}, { wrappingPaper: 0, ribbons: 0 });
-
-console.log('wrapping paper ft^2 needed:', total.wrappingPaper);
-console.log('ribbon ft needed:', total.ribbons);
 
 /**
  * The elves are running low on wrapping paper, and so they need to submit an
@@ -68,34 +28,27 @@ console.log('ribbon ft needed:', total.ribbons);
  * wrapping paper should they order?
  */
 
-exports.part1 = function(input) {
-  var DIMENSIONS_REGEX = /^(\d*)x(\d*)x(\d*)/;
+function wrappingPaper(length, width, height) {
+  const lw = length * width;
+  const wh = width * height;
+  const hl = height * length;
 
-  function wrappingPaper(length, width, height) {
-    var lw = length * width;
-    var wh = width * height;
-    var hl = height * length;
+  const main = 2 * (lw + wh + hl);
+  const extra = [ lw, wh, hl ].sort(sortNumbers)[0];
 
-    var main = 2 * (lw + wh + hl);
-    var extra = [ lw, wh, hl ].sort(sortNumbers)[0];
+  return main + extra;
+}
 
-    return main + extra;
-  }
-
-  function sortNumbers(a, b) { return a - b; }
-
-  return input.split('\n').reduce(function(total, line) {
-    var pieces = line.match(DIMENSIONS_REGEX);
-
-    if (!pieces) return total;
-
-    var length = parseInt(pieces[1], 10);
-    var width = parseInt(pieces[2], 10);
-    var height = parseInt(pieces[3], 10);
+export function part1(input) {
+  return input.split('\n').reduce((total, line) => {
+    const [ , length, width, height ] = line
+      .match(DIMENSIONS_REGEX)
+      .slice(1, 3)
+      .map((num) => parseInt(num, 10));
 
     return total + wrappingPaper(length, width, height);
   }, 0);
-};
+}
 
 /**
  * --- Part Two ---
@@ -123,28 +76,21 @@ exports.part1 = function(input) {
  * How many total feet of ribbon should they order?
  */
 
-exports.part2 = function(input) {
-  var DIMENSIONS_REGEX = /^(\d*)x(\d*)x(\d*)/;
+function ribbons(length, width, height) {
+  const EXTRA_LENGTH = length * width * height;
 
-  function ribbons(length, width, height) {
-    return [ length, width, height ]
-      .sort(sortNumbers)
-      .slice(0, 2)
-      .reduce(function(total, length) {
-        return total + (length * 2);
-      }, length * width * height);
-  }
+  return [ length, width, height ]
+    .sort(sortNumbers)
+    .slice(0, 2)
+    .reduce((total, len) => total + (len * 2), EXTRA_LENGTH);
+}
 
-  function sortNumbers(a, b) { return a - b; }
-
-  return input.split('\n').reduce(function(total, line) {
-    var pieces = line.match(DIMENSIONS_REGEX);
-
-    if (!pieces) return total;
-
-    var length = parseInt(pieces[1], 10);
-    var width = parseInt(pieces[2], 10);
-    var height = parseInt(pieces[3], 10);
+export function part2(input) {
+  return input.split('\n').reduce((total, line) => {
+    const [ , length, width, height ] = line
+      .match(DIMENSIONS_REGEX)
+      .slice(1, 3)
+      .map((num) => parseInt(num, 10));
 
     return total + ribbons(length, width, height);
   }, 0);

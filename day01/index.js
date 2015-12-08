@@ -1,5 +1,12 @@
 'use strict';
 
+const UP = '(';
+const DOWN = ')';
+const ACTIONS = {
+  [UP]: (val) => val + 1,
+  [DOWN]: (val) => val - 1,
+};
+
 /**
  * --- Day 1: Not Quite Lisp ---
  *
@@ -35,21 +42,15 @@
  * To what floor do the instructions take Santa?
  */
 
-exports.part1 = function(input) {
-  var ACTIONS = {
-    // UP
-    '(': function(val) { return val + 1; },
-    // DOWN
-    ')': function(val) { return val - 1; },
-  };
-  var curFloor = 0;
+export function part1(input) {
+  let curFloor = 0;
 
-  for (var i = 0, len = input.length; i < len; i++) {
+  for (let i = 0, len = input.length; i < len; i++) {
     curFloor = ACTIONS[input[i]](curFloor);
   }
 
   return curFloor;
-};
+}
 
 /**
  * --- Part Two ---
@@ -67,17 +68,11 @@ exports.part1 = function(input) {
  * basement?
  */
 
-exports.part2 = function(input) {
-  var ACTIONS = {
-    // UP
-    '(': function(val) { return val + 1; },
-    // DOWN
-    ')': function(val) { return val - 1; },
-  };
-  var curFloor = 0;
-  var basementPosition = null;
+export function part2(input) {
+  let curFloor = 0;
+  let basementPosition = null;
 
-  for (var i = 0, len = input.length; i < len; i++) {
+  for (let i = 0, len = input.length; i < len; i++) {
     curFloor = ACTIONS[input[i]](curFloor);
 
     if (curFloor < 0 && basementPosition === null) {
@@ -86,5 +81,5 @@ exports.part2 = function(input) {
   }
 
   return basementPosition;
-};
+}
 
