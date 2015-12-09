@@ -9,6 +9,7 @@
   "rules": {
     "strict": 0,
     "global-require": 0,
-    "no-console": 0
+    "no-console": 0,
+    "prefer-const": 0
   }
 }

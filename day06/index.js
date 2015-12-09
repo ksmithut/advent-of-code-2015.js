@@ -1,68 +1,135 @@
 'use strict';
 
-var input = require('fs').readFileSync(__dirname + '/input.txt', 'utf8');
+const COMMAND_PARSE = /^(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)$/;
 
-// Setup
-var X_LENGTH = 1000;
-var Y_LENGTH = 1000;
+function parseCommand(line) {
+  let [ , action, x1, y1, x2, y2 ] = line.match(COMMAND_PARSE);
 
-var lights = [];
+  return {
+    action,
+    x1: parseInt(x1, 10),
+    y1: parseInt(y1, 10),
+    x2: parseInt(x2, 10),
+    y2: parseInt(y2, 10),
+  };
+}
 
-for (var i = 0; i < X_LENGTH; i++) {
-  lights[i] = [];
-  for (var j = 0; j < Y_LENGTH; j++) {
-    lights[i][j] = false;
+function createLights(width, height, defaultVal = 0) {
+  const lights = [];
+
+  for (let i = 0; i < width; i++) {
+    lights[i] = [];
+    for (let j = 0; j < height; j++) {
+      lights[i][j] = defaultVal;
+    }
   }
+
+  return lights;
 }
 
-// PARAMETERS
-var ACTIONS = {
-  'toggle': function(val) { return !val; },
-  'turn off': function() { return false; },
-  'turn on': function() { return true; },
-};
-var ACTIONS_TWO = {
-  'toggle': function(val) { return (val || 0) + 2; },
-  'turn off': function(val) {
-    val = (val || 0) - 1;
-    if (val < 0) { val = 0; }
-    return val;
-  },
-  'turn on': function(val) { return (val || 0) + 1; },
-};;
-var COMMAND_PARSE = /^(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)$/;
+/**
+ * --- Day 6: Probably a Fire Hazard ---
+ *
+ * Because your neighbors keep defeating you in the holiday house decorating
+ * contest year after year, you've decided to deploy one million lights in a
+ * 1000x1000 grid.
+ *
+ * Furthermore, because you've been especially nice this year, Santa has mailed
+ * you instructions on how to display the ideal lighting configuration.
+ *
+ * Lights in your grid are numbered from 0 to 999 in each direction; the lights
+ * at each corner are at 0,0, 0,999, 999,999, and 999,0. The instructions
+ * include whether to turn on, turn off, or toggle various inclusive ranges
+ * given as coordinate pairs. Each coordinate pair represents opposite corners
+ * of a rectangle, inclusive; a coordinate pair like 0,0 through 2,2 therefore
+ * refers to 9 lights in a 3x3 square. The lights all start turned off.
+ *
+ * To defeat your neighbors this year, all you have to do is set up your lights
+ * by doing the instructions Santa sent you in order.
+ *
+ * For example:
+ *
+ * turn on 0,0 through 999,999 would turn on (or leave on) every light.
+ *
+ * toggle 0,0 through 999,0 would toggle the first line of 1000 lights, turning
+ * off the ones that were on, and turning on the ones that were off.
+ *
+ * turn off 499,499 through 500,500 would turn off (or leave off) the middle
+ * four lights.
+ *
+ * After following the instructions, how many lights are lit?
+ */
 
-function int(num) {
-  return parseInt(num, 10);
-}
+export function part1(input) {
+  const lights = createLights(1000, 1000);
+  const ACTIONS = {
+    'toggle': (val) => val ? 0 : 1,
+    'turn off': () => 0,
+    'turn on': () => 1,
+  };
 
-input
-  .split('\n')
-  .forEach(function(command, i) {
-    command = command.match(COMMAND_PARSE);
+  input.split('\n').forEach((line) => {
+    const { action, x1, y1, x2, y2 } = parseCommand(line);
 
-    var action = command[1];
-    var topLeft = { x: int(command[2]), y: int(command[3]) };
-    var bottomRight = { x: int(command[4]), y: int(command[5]) };
-
-    for (var x = topLeft.x; x <= bottomRight.x; x++) {
-      for (var y = topLeft.y; y <= bottomRight.y; y++) {
-        lights[x][y] = ACTIONS_TWO[action](lights[x][y]);
+    for (let x = x1; x <= x2; x++) {
+      for (let y = y1; y <= y2; y++) {
+        lights[x][y] = ACTIONS[action](lights[x][y]);
       }
     }
   });
 
-var turnedOn = lights.reduce(function(total, col) {
-  return total + col.reduce(function(total, light) {
-    return total + ( light ? 1 : 0 );
+  return lights.reduce((total, col) => {
+    return total + col.reduce((totalCol, cell) => totalCol + cell, 0);
   }, 0);
-}, 0);
+}
 
-var brightness = lights.reduce(function(total, col) {
-  return total + col.reduce(function(total, light) {
-    return total + light;
+/**
+ * --- Part Two ---
+ *
+ * You just finish implementing your winning light pattern when you realize you
+ * mistranslated Santa's message from Ancient Nordic Elvish.
+ *
+ * The light grid you bought actually has individual brightness controls; each
+ * light can have a brightness of zero or more. The lights all start at zero.
+ *
+ * The phrase turn on actually means that you should increase the brightness of
+ * those lights by 1.
+ *
+ * The phrase turn off actually means that you should decrease the brightness of
+ * those lights by 1, to a minimum of zero.
+ *
+ * The phrase toggle actually means that you should increase the brightness of
+ * those lights by 2.
+ *
+ * What is the total brightness of all lights combined after following Santa's
+ * instructions?
+ *
+ * For example:
+ *
+ * turn on 0,0 through 0,0 would increase the total brightness by 1.
+ *
+ * toggle 0,0 through 999,999 would increase the total brightness by 2000000.
+ */
+
+export function part2(input) {
+  const lights = createLights(1000, 1000);
+  const ACTIONS = {
+    'toggle': (val) => val + 2,
+    'turn off': (val) => val <= 0 ? 0 : val - 1,
+    'turn on': (val) => val + 1,
+  };
+
+  input.split('\n').forEach((line) => {
+    const { action, x1, y1, x2, y2 } = parseCommand(line);
+
+    for (let x = x1; x <= x2; x++) {
+      for (let y = y1; y <= y2; y++) {
+        lights[x][y] = ACTIONS[action](lights[x][y]);
+      }
+    }
+  });
+
+  return lights.reduce((total, col) => {
+    return total + col.reduce((totalCol, cell) => totalCol + cell, 0);
   }, 0);
-}, 0);
-
-console.log('lights turned on:', turnedOn);
-console.log('brightness:', brightness);
+}
