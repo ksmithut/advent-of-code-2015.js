@@ -1,5 +1,31 @@
 'use strict';
 
+const PARSE_GATE = /(\b[a-z0-9]*\b)? ?(AND|OR|LSHIFT|RSHIFT|NOT)? ?(\b[a-z0-9]*\b)? -> (\w*)$/;
+
+function parseLine(line) {
+ let [ , input1, command, input2, wireName ] = line.match(PARSE_GATE);
+
+ return { input1, command, input2, wireName };
+}
+
+function normalize(input, wires) {
+ let parsedInput = parseInt(input, 10);
+
+ return isNaN(parsedInput) ? () => wires[input]() : () => parsedInput;
+}
+
+function once(fn) {
+ var called = false;
+ var value;
+ return function() {
+   if (!called) {
+     called = true;
+     value = fn();
+   }
+   return value;
+ }
+}
+
 /**
  * --- Day 7: Some Assembly Required ---
  *
@@ -56,12 +82,69 @@
  * i: 65079
  * x: 123
  * y: 456
+ *
  * In little Bobby's kit's instructions booklet (provided as your puzzle input),
  * what signal is ultimately provided to wire a?
  */
 
 export function part1(input) {
+
   const wires = {};
 
+  const COMMANDS = {
+    ASSIGN: (a) => a(),
+    AND: (a, b) => a() & b(),
+    OR: (a, b) => a() | b(),
+    LSHIFT: (a, b) => a() << b(),
+    RSHIFT: (a, b) => a() >> b(),
+    NOT: (a, b) => ~b(),
+  };
 
+  input.split('\n').forEach((line) => {
+    let { input1, command = 'ASSIGN', input2, wireName } = parseLine(line);
+
+    input1 = normalize(input1, wires);
+    input2 = normalize(input2, wires);
+
+    wires[wireName] = once(() => COMMANDS[command](input1, input2));
+  });
+
+  return wires.a();
+}
+
+/**
+ * --- Part Two ---
+ *
+ * Now, take the signal you got on wire a, override wire b to that signal, and
+ * reset the other wires (including wire a). What new signal is ultimately
+ * provided to wire a?
+ */
+
+export function part2(input) {
+
+  const wires = {};
+
+  const COMMANDS = {
+    ASSIGN: (a) => a(),
+    AND: (a, b) => a() & b(),
+    OR: (a, b) => a() | b(),
+    LSHIFT: (a, b) => a() << b(),
+    RSHIFT: (a, b) => a() >> b(),
+    NOT: (a, b) => ~b(),
+  };
+
+  input.split('\n').forEach((line) => {
+    let { input1, command = 'ASSIGN', input2, wireName } = parseLine(line);
+
+    if (wireName === 'b') {
+      input1 = part1(input);
+    }
+
+    input1 = normalize(input1, wires);
+    input2 = normalize(input2, wires);
+
+    wires[wireName] = once(() => COMMANDS[command](input1, input2));
+  });
+
+  return wires.a();
 }
