@@ -7,6 +7,12 @@ const ACTIONS = {
   [DOWN]: (val) => val - 1,
 };
 
+function forEachChar(str, fn) {
+  for (let i = 0, len = str.length; i < len; i++) {
+    fn(str[i], i, str);
+  }
+}
+
 /**
  * --- Day 1: Not Quite Lisp ---
  *
@@ -45,12 +51,14 @@ const ACTIONS = {
 export function part1(input) {
   let curFloor = 0;
 
-  for (let i = 0, len = input.length; i < len; i++) {
-    curFloor = ACTIONS[input[i]](curFloor);
-  }
+  forEachChar(input, (char) => {
+    curFloor = ACTIONS[char](curFloor);
+  });
 
   return curFloor;
 }
+
+export let part1Answer = 74;
 
 /**
  * --- Part Two ---
@@ -72,14 +80,16 @@ export function part2(input) {
   let curFloor = 0;
   let basementPosition = null;
 
-  for (let i = 0, len = input.length; i < len; i++) {
-    curFloor = ACTIONS[input[i]](curFloor);
+  forEachChar(input, (char, i) => {
+    curFloor = ACTIONS[char](curFloor);
 
     if (curFloor < 0 && basementPosition === null) {
       basementPosition = i + 1;
     }
-  }
+  });
 
   return basementPosition;
 }
+
+export let part2Answer = 1795;
 
