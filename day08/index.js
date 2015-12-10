@@ -47,7 +47,7 @@
 export function part1(input) {
   return input.split('\n').reduce((diff, line) => {
     let evalled = line
-      .replace(/(\\x.{2}|\\[^x])/g, 'a')
+      .replace(/(\\x.{2}|\\[^x])/g, 'a') // TODO replace with actual character
       .replace(/^"(.*)"$/, '$1');
 
     return diff + (line.length - evalled.length);
