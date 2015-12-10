@@ -2,28 +2,38 @@
 
 const PARSE_GATE = /(\b[a-z0-9]*\b)? ?(AND|OR|LSHIFT|RSHIFT|NOT)? ?(\b[a-z0-9]*\b)? -> (\w*)$/;
 
-function parseLine(line) {
- let [ , input1, command, input2, wireName ] = line.match(PARSE_GATE);
+const COMMANDS = {
+  ASSIGN: (a) => a(),
+  AND: (a, b) => a() & b(),
+  OR: (a, b) => a() | b(),
+  LSHIFT: (a, b) => a() << b(),
+  RSHIFT: (a, b) => a() >> b(),
+  NOT: (a, b) => ~b(),
+};
 
- return { input1, command, input2, wireName };
+function parseLine(line) {
+  let [ , input1, command, input2, wireName ] = line.match(PARSE_GATE);
+
+  return { input1, command, input2, wireName };
 }
 
 function normalize(input, wires) {
- let parsedInput = parseInt(input, 10);
+  let parsedInput = parseInt(input, 10);
 
- return isNaN(parsedInput) ? () => wires[input]() : () => parsedInput;
+  return isNaN(parsedInput) ? () => wires[input]() : () => parsedInput;
 }
 
 function once(fn) {
- var called = false;
- var value;
- return function() {
-   if (!called) {
-     called = true;
-     value = fn();
-   }
-   return value;
- }
+  let called = false;
+  let value;
+
+  return () => {
+    if (!called) {
+      called = true;
+      value = fn();
+    }
+    return value;
+  };
 }
 
 /**
@@ -91,15 +101,6 @@ export function part1(input) {
 
   const wires = {};
 
-  const COMMANDS = {
-    ASSIGN: (a) => a(),
-    AND: (a, b) => a() & b(),
-    OR: (a, b) => a() | b(),
-    LSHIFT: (a, b) => a() << b(),
-    RSHIFT: (a, b) => a() >> b(),
-    NOT: (a, b) => ~b(),
-  };
-
   input.split('\n').forEach((line) => {
     let { input1, command = 'ASSIGN', input2, wireName } = parseLine(line);
 
@@ -123,15 +124,6 @@ export function part1(input) {
 export function part2(input) {
 
   const wires = {};
-
-  const COMMANDS = {
-    ASSIGN: (a) => a(),
-    AND: (a, b) => a() & b(),
-    OR: (a, b) => a() | b(),
-    LSHIFT: (a, b) => a() << b(),
-    RSHIFT: (a, b) => a() >> b(),
-    NOT: (a, b) => ~b(),
-  };
 
   input.split('\n').forEach((line) => {
     let { input1, command = 'ASSIGN', input2, wireName } = parseLine(line);
