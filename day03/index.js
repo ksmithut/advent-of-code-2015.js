@@ -49,6 +49,8 @@ export function part1(input) {
     visits[key]++;
   }
 
+  visit(pos.x, pos.y);
+
   for (let i = 0, len = input.length; i < len; i++) {
     ACTIONS[input[i]](pos);
     visit(pos.x, pos.y);
@@ -58,7 +60,9 @@ export function part1(input) {
 }
 
 export let part1Examples = [
-
+  { input: '>', value: 2 },
+  { input: '^>v<', value: 4 },
+  { input: '^v^v^v^v^v', value: 2 },
 ];
 
 export let part1Answer = 2565;
@@ -108,6 +112,8 @@ export function part2(input) {
     visits[key]++;
   }
 
+  visit(0, 0);
+
   for (let i = 0, len = input.length; i < len; i++) {
     const pos = getCourier();
 
@@ -119,7 +125,9 @@ export function part2(input) {
 }
 
 export let part2Examples = [
-
+  { input: '^v', value: 3 },
+  { input: '^>v<', value: 3 },
+  { input: '^v^v^v^v^v', value: 11 },
 ];
 
 export let part2Answer = 2639;
