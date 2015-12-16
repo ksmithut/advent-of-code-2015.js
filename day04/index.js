@@ -9,6 +9,16 @@ function getHash(data) {
     .digest('hex');
 }
 
+function hashUntilStartsWith(start, secret) {
+  const LENGTH = start.length;
+
+  let i = 0;
+
+  while (getHash(secret + i).substr(0, LENGTH) !== start) { i++; }
+
+  return i;
+}
+
 /**
  * --- Day 4: The Ideal Stocking Stuffer ---
  *
@@ -33,21 +43,12 @@ function getHash(data) {
  */
 
 export function part1(input) {
-  const START = '00000';
-  const START_LENGTH = START.length;
-
-  let i = 0;
-  let hash = '';
-
-  for (; hash.substr(0, START_LENGTH) !== START; ++i) {
-    hash = getHash(input + i);
-  }
-
-  return i - 1;
+  return hashUntilStartsWith('00000', input);
 }
 
 export let part1Examples = [
-
+  { input: 'abcdef', value: 609043 },
+  { input: 'pqrstuv', value: 1048970 },
 ];
 
 export let part1Answer = 282749;
@@ -59,21 +60,7 @@ export let part1Answer = 282749;
  */
 
 export function part2(input) {
-  const START = '000000';
-  const START_LENGTH = START.length;
-
-  let i = 0;
-  let hash = '';
-
-  for (; hash.substr(0, START_LENGTH) !== START; ++i) {
-    hash = getHash(input + i);
-  }
-
-  return i - 1;
+  return hashUntilStartsWith('000000', input);
 }
-
-export let part2Examples = [
-
-];
 
 export let part2Answer = 9962624;
