@@ -108,6 +108,26 @@ export let part1Answer = '373';
  * What is the number of the real Aunt Sue?
  */
 
+const GT_KEYS = [ 'cats', 'trees' ];
+const LT_KEYS = [ 'pomeranians', 'goldfish' ];
+
 export function part2(input) {
 
+  let sue = input.split('\n')
+    .map(parseLine)
+    .find(({ props }) => {
+      return Object.keys(props).every((key) => {
+        if (GT_KEYS.indexOf(key) !== -1) {
+          return props[key] > AUNT_SUE[key];
+        } else if (LT_KEYS.indexOf(key) !== -1) {
+          return props[key] < AUNT_SUE[key];
+        }
+        return AUNT_SUE[key] === props[key];
+      });
+    });
+
+  return sue.num;
+
 }
+
+export let part2Answer = '260';
