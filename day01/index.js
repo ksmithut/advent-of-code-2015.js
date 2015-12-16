@@ -1,5 +1,12 @@
 'use strict';
 
+const UP = '(';
+const DOWN = ')';
+const ACTIONS = {
+  [UP]: (val) => val + 1,
+  [DOWN]: (val) => val - 1,
+};
+
 /**
  * --- Day 1: Not Quite Lisp ---
  *
@@ -34,13 +41,6 @@
  *
  * To what floor do the instructions take Santa?
  */
-
-const UP = '(';
-const DOWN = ')';
-const ACTIONS = {
-  [UP]: (val) => val + 1,
-  [DOWN]: (val) => val - 1,
-};
 
 export function part1(input) {
   let floor = 0;

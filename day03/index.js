@@ -11,6 +11,37 @@ const ACTIONS = {
   [RIGHT]: (pos) => pos.x++,
 };
 
+function runCouriers(numCouriers, input) {
+  let currentCourier = 0;
+  let visits = {};
+  let couriers = new Array(numCouriers)
+    .fill(null)
+    .map(() => ({ x: 0, y: 0 }));
+
+  function getCourier() {
+    if (++currentCourier >= couriers.length) { currentCourier = 0; }
+    return couriers[currentCourier];
+  }
+
+  function visit(x, y) {
+    const key = `${x}x${y}`;
+
+    visits[key] = visits[key] || 0;
+    visits[key]++;
+  }
+
+  visit(0, 0);
+
+  for (let i = 0, len = input.length; i < len; i++) {
+    const pos = getCourier();
+
+    ACTIONS[input[i]](pos);
+    visit(pos.x, pos.y);
+  }
+
+  return Object.keys(visits).length;
+}
+
 /**
  * --- Day 3: Perfectly Spherical Houses in a Vacuum ---
  *
@@ -39,24 +70,7 @@ const ACTIONS = {
  */
 
 export function part1(input) {
-  const pos = { x: 0, y: 0 };
-  const visits = {};
-
-  function visit(x, y) {
-    const key = `${x}x${y}`;
-
-    visits[key] = visits[key] || 0;
-    visits[key]++;
-  }
-
-  visit(pos.x, pos.y);
-
-  for (let i = 0, len = input.length; i < len; i++) {
-    ACTIONS[input[i]](pos);
-    visit(pos.x, pos.y);
-  }
-
-  return Object.keys(visits).length;
+  return runCouriers(1, input);
 }
 
 export let part1Examples = [
@@ -93,35 +107,7 @@ export let part1Answer = 2565;
  */
 
 export function part2(input) {
-  const couriers = [
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-  ];
-  let currentCourier = 0;
-  const visits = {};
-
-  function getCourier() {
-    if (++currentCourier >= couriers.length) { currentCourier = 0; }
-    return couriers[currentCourier];
-  }
-
-  function visit(x, y) {
-    const key = `${x}x${y}`;
-
-    visits[key] = visits[key] || 0;
-    visits[key]++;
-  }
-
-  visit(0, 0);
-
-  for (let i = 0, len = input.length; i < len; i++) {
-    const pos = getCourier();
-
-    ACTIONS[input[i]](pos);
-    visit(pos.x, pos.y);
-  }
-
-  return Object.keys(visits).length;
+  return runCouriers(2, input);
 }
 
 export let part2Examples = [
