@@ -1,6 +1,6 @@
 'use strict';
 
-function parseCommand(line) {
+function parseLine(line) {
   let [ , action, x1, y1, x2, y2 ] = line.match(/^(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)$/);
 
   return {
@@ -13,16 +13,27 @@ function parseCommand(line) {
 }
 
 function createLights(width, height, defaultVal = 0) {
-  const lights = [];
+  return new Array(width)
+    .fill(null)
+    .map(() => new Array(height).fill(defaultVal));
+}
 
-  for (let i = 0; i < width; i++) {
-    lights[i] = [];
-    for (let j = 0; j < height; j++) {
-      lights[i][j] = defaultVal;
+function runLightCommands(input, width, height, actions) {
+  let lights = createLights(width, height);
+
+  input.split('\n').forEach((line) => {
+    let { action, x1, y1, x2, y2 } = parseLine(line);
+
+    for (let x = x1; x <= x2; x++) {
+      for (let y = y1; y <= y2; y++) {
+        lights[x][y] = actions[action](lights[x][y]);
+      }
     }
-  }
+  });
 
-  return lights;
+  return lights.reduce((total, col) => {
+    return total + col.reduce((totalCol, cell) => totalCol + cell, 0);
+  }, 0);
 }
 
 /**
@@ -59,30 +70,20 @@ function createLights(width, height, defaultVal = 0) {
  */
 
 export function part1(input) {
-  const lights = createLights(1000, 1000);
-  const ACTIONS = {
+  return runLightCommands(input, 1000, 1000, {
     'toggle': (val) => val ? 0 : 1,
     'turn off': () => 0,
     'turn on': () => 1,
-  };
-
-  input.split('\n').forEach((line) => {
-    const { action, x1, y1, x2, y2 } = parseCommand(line);
-
-    for (let x = x1; x <= x2; x++) {
-      for (let y = y1; y <= y2; y++) {
-        lights[x][y] = ACTIONS[action](lights[x][y]);
-      }
-    }
   });
-
-  return lights.reduce((total, col) => {
-    return total + col.reduce((totalCol, cell) => totalCol + cell, 0);
-  }, 0);
 }
 
 export let part1Examples = [
-
+  {
+    input: `turn on 0,0 through 999,999
+toggle 0,0 through 999,0
+turn off 499,499 through 500,500`,
+    value: 998996,
+  },
 ];
 
 export let part1Answer = 543903;
@@ -116,30 +117,16 @@ export let part1Answer = 543903;
  */
 
 export function part2(input) {
-  const lights = createLights(1000, 1000);
-  const ACTIONS = {
+  return runLightCommands(input, 1000, 1000, {
     'toggle': (val) => val + 2,
     'turn off': (val) => val <= 0 ? 0 : val - 1,
     'turn on': (val) => val + 1,
-  };
-
-  input.split('\n').forEach((line) => {
-    const { action, x1, y1, x2, y2 } = parseCommand(line);
-
-    for (let x = x1; x <= x2; x++) {
-      for (let y = y1; y <= y2; y++) {
-        lights[x][y] = ACTIONS[action](lights[x][y]);
-      }
-    }
   });
-
-  return lights.reduce((total, col) => {
-    return total + col.reduce((totalCol, cell) => totalCol + cell, 0);
-  }, 0);
 }
 
 export let part2Examples = [
-
+  { input: 'turn on 0,0 through 0,0', value: 1 },
+  { input: 'toggle 0,0 through 999,999', value: 2000000 },
 ];
 
 export let part2Answer = 14687245;
