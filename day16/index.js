@@ -49,7 +49,7 @@
  * What is the number of the Sue that got you the gift?
  */
 
-const PARSE_LINE = /^Sue: (\d*): (.*)$/;
+const PARSE_LINE = /^Sue (\d*): (.*)$/;
 
 function parseLine(line) {
   let [ , num, props ] = line.match(PARSE_LINE);
@@ -68,7 +68,7 @@ const AUNT_SUE = {
   children: 3,
   cats: 7,
   samoyeds: 2,
-  pomerantians: 3,
+  pomeranians: 3,
   akitas: 0,
   vizslas: 0,
   goldfish: 5,
@@ -87,5 +87,27 @@ export function part1(input) {
       });
     });
 
-  console.log(sue);
+  return sue.num;
+}
+
+export let part1Answer = '373';
+
+/**
+ * --- Part Two ---
+ *
+ * As you're about to send the thank you note, something in the MFCSAM's
+ * instructions catches your eye. Apparently, it has an outdated
+ * retroencabulator, and so the output from the machine isn't exact values -
+ * some of them indicate ranges.
+ *
+ * In particular, the cats and trees readings indicates that there are greater
+ * than that many (due to the unpredictable nuclear decay of cat dander and tree
+ * pollen), while the pomeranians and goldfish readings indicate that there are
+ * fewer than that many (due to the modial interaction of magnetoreluctance).
+ *
+ * What is the number of the real Aunt Sue?
+ */
+
+export function part2(input) {
+
 }
