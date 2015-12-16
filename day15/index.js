@@ -1,11 +1,5 @@
 'use strict';
 
-const PARSE_LINE = /^(\w*): (\w*) ((-?\d*),? ?)*/;
-
-function parseLine(line) {
-
-}
-
 /**
  * --- Day 15: Science for Hungry People ---
  *
@@ -49,26 +43,140 @@ function parseLine(line) {
  * to zero.
  */
 
-export function part1(input) {
+const PARSE_LINE = /^(\w*): (.*)/;
 
+function parseLine(line) {
+  let [ , ingredient, stats ] = line.match(PARSE_LINE);
+
+  stats = stats.split(', ').reduce((hash, stat) => {
+    let [ name, value ] = stat.split(' ');
+
+    hash[name] = parseInt(value, 10);
+    return hash;
+  }, {});
+
+  return { ingredient, stats };
+}
+
+function getPermutations(total, length) {
+  if (length <= 1) { return [ [ total ] ]; }
+
+  let permutations = [];
+
+  for (let i = 0; i < total; i++) {
+    getPermutations(total - i, length - 1).forEach((subPermutation) => {
+      permutations.push([ i, ...subPermutation ]);
+    });
+  }
+
+  return permutations;
+}
+
+export function part1(input) {
+  const MAX_INGREDIENTS = 100;
+
+  let ingredients = input.split('\n').map(parseLine);
+
+  let permutations = getPermutations(MAX_INGREDIENTS, ingredients.length);
+
+  return permutations.reduce((highest, permutation) => {
+    let qualities = {
+      capacity: 0,
+      durability: 0,
+      flavor: 0,
+      texture: 0,
+      calories: 0,
+    };
+
+    ingredients.forEach(({ stats }, i) => {
+      Object.keys(stats).forEach((quality) => {
+        qualities[quality] += stats[quality] * permutation[i];
+      });
+    });
+
+    let value = Object.keys(qualities).reduce((total, quality) => {
+      // Ignore Calories
+      if (quality === 'calories') { return total; }
+
+      let qualityValue = qualities[quality] < 0 ? 0 : qualities[quality];
+
+      return total * qualityValue;
+    }, 1);
+
+    if (highest === null || value > highest) { return value; }
+
+    return highest;
+  }, null);
 }
 
 export let part1Examples = [
-
+  {
+    input: [
+      'Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8',
+      'Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3',
+    ].join('\n'),
+    value: 62842880,
+  },
 ];
 
-export let part1Answer = 0;
+export let part1Answer = 13882464;
 
 /**
-
+ * --- Part Two ---
+ *
+ * Your cookie recipe becomes wildly popular! Someone asks if you can make
+ * another recipe that has exactly 500 calories per cookie (so they can use it
+ * as a meal replacement). Keep the rest of your award-winning process the same
+ * (100 teaspoons, same ingredients, same scoring system).
+ *
+ * For example, given the ingredients above, if you had instead selected 40
+ * teaspoons of butterscotch and 60 teaspoons of cinnamon (which still adds to
+ * 100), the total calorie count would be 40*8 + 60*3 = 500. The total score
+ * would go down, though: only 57600000, the best you can do in such trying
+ * circumstances.
+ *
+ * Given the ingredients in your kitchen and their properties, what is the total
+ * score of the highest-scoring cookie you can make with a calorie total of 500?
  */
 
 export function part2(input) {
+  const MAX_INGREDIENTS = 100;
+  const CALORIES = 500;
 
+  let ingredients = input.split('\n').map(parseLine);
+
+  let permutations = getPermutations(MAX_INGREDIENTS, ingredients.length);
+
+  return permutations.reduce((highest, permutation) => {
+    let qualities = {
+      capacity: 0,
+      durability: 0,
+      flavor: 0,
+      texture: 0,
+      calories: 0,
+    };
+
+    ingredients.forEach(({ stats }, i) => {
+      Object.keys(stats).forEach((quality) => {
+        qualities[quality] += stats[quality] * permutation[i];
+      });
+    });
+
+    if (qualities.calories !== CALORIES) { return highest; }
+
+    let value = Object.keys(qualities).reduce((total, quality) => {
+      // Ignore Calories
+      if (quality === 'calories') { return total; }
+
+      let qualityValue = qualities[quality] < 0 ? 0 : qualities[quality];
+
+      return total * qualityValue;
+    }, 1);
+
+    if (highest === null || value > highest) { return value; }
+
+    return highest;
+  }, null);
 }
 
-export let part2Examples = [
-
-];
-
-export let part2Answer = 0;
+export let part2Answer = 11171160;

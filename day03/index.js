@@ -61,7 +61,7 @@ export let part1Examples = [
 
 ];
 
-export let part1Answer = 0;
+export let part1Answer = 2565;
 
 /**
  * --- Part Two ---
@@ -122,4 +122,4 @@ export let part2Examples = [
 
 ];
 
-export let part2Answer = 0;
+export let part2Answer = 2639;
