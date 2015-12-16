@@ -1,5 +1,15 @@
 'use strict';
 
+function totalNice(input, conditions) {
+  return input
+    .split('\n')
+    .reduce((total, str) => {
+      let isNice = conditions.every((condition) => condition(str));
+
+      return total + (isNice ? 1 : 0);
+    }, 0);
+}
+
 /**
  * --- Day 5: Doesn't He Have Intern-Elves For This? ---
  *
@@ -35,29 +45,22 @@
  */
 
 export function part1(input) {
-  const VOWELS = /[aeiou]/g;
-  const DUPLICATE = /(\w)\1/;
-  const BLACKLIST = /(ab|cd|pq|xy)/;
-
-  function isNice(str) {
-    const numVowels = (str.match(VOWELS) || []).length;
-
-    if (numVowels < 3) { return false; }
-    if (!DUPLICATE.test(str)) { return false; }
-    if (BLACKLIST.test(str)) { return false; }
-    return true;
-  }
-
-  return input
-    .split('\n')
-    .reduce((total, str) => {
-      if (isNice(str)) { total++; }
-      return total;
-    }, 0);
+  return totalNice(input, [
+    // At least three vowels
+    (str) => (str.match(/[aeiou]/g) || []).length >= 3,
+    // Contains at least one letter that appers twice in a row
+    (str) => (/(\w)\1/).test(str),
+    // Must not contain certain string combinations
+    (str) => !(/(ab|cd|pq|xy)/).test(str),
+  ]);
 }
 
 export let part1Examples = [
-
+  { input: 'ugknbfddgicrmopn', value: 1 },
+  { input: 'aaa', value: 1 },
+  { input: 'jchzalrnumimnmhp', value: 0 },
+  { input: 'haegwjzuvuyypxyu', value: 0 },
+  { input: 'dvszwmarrgswjxmb', value: 0 },
 ];
 
 export let part1Answer = 238;
@@ -96,25 +99,19 @@ export let part1Answer = 238;
  */
 
 export function part2(input) {
-  const ONE_LETTER_BETWEEN = /(\w)\w\1/;
-  const TWO_REPEATED = /(\w{2}).*\1/;
-
-  function isNice(str) {
-    if (!ONE_LETTER_BETWEEN.test(str)) { return false; }
-    if (!TWO_REPEATED.test(str)) { return false; }
-    return true;
-  }
-
-  return input
-    .split('\n')
-    .reduce((total, str) => {
-      if (isNice(str)) { total++; }
-      return total;
-    }, 0);
+  return totalNice(input, [
+    // One letter between repeated letters
+    (str) => (/(\w)\w\1/).test(str),
+    // Have two repeating
+    (str) => (/(\w{2}).*\1/).test(str),
+  ]);
 }
 
 export let part2Examples = [
-
+  { input: 'qjhvhtzxzqqjkmpb', value: 1 },
+  { input: 'xxyxx', value: 1 },
+  { input: 'uurcxstgmygtbstg', value: 0 },
+  { input: 'ieodomkazucvgmuy', value: 0 },
 ];
 
 export let part2Answer = 69;
