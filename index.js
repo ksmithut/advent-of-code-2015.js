@@ -52,7 +52,7 @@ function runPart(method, mainInput, answer, examples = []) {
     let output = method(input);
 
     if (method(input) === value) {
-      console.log(` ${RIGHT} ${input} === ${value}`);
+      console.log(` ${RIGHT} ${input} = ${value}`);
     } else {
       console.log(` ${WRONG} expected ${value}, given ${output}`);
     }

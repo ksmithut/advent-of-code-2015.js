@@ -84,6 +84,12 @@ export function part1(input) {
 
 }
 
+export let part1Examples = [
+
+];
+
+export let part1Answer = 0;
+
 /**
  * --- Part Two ---
  *
@@ -127,3 +133,9 @@ export function part2(input) {
 
   return longestDistance;
 }
+
+export let part2Examples = [
+
+];
+
+export let part2Answer = 0;

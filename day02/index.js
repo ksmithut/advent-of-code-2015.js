@@ -55,6 +55,13 @@ export function part1(input) {
   }, 0);
 }
 
+export let part1Examples = [
+  { input: '2x3x4', value: 58 },
+  { input: '1x1x10', value: 43 },
+];
+
+export let part1Answer = 1606483;
+
 /**
  * --- Part Two ---
  *
@@ -97,3 +104,10 @@ export function part2(input) {
     return total + ribbons(length, width, height);
   }, 0);
 }
+
+export let part2Examples = [
+  { input: '2x3x4', value: 34 },
+  { input: '1x1x10', value: 14 },
+];
+
+export let part2Answer = 3842356;

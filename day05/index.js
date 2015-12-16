@@ -56,6 +56,12 @@ export function part1(input) {
     }, 0);
 }
 
+export let part1Examples = [
+
+];
+
+export let part1Answer = 0;
+
 /**
  * --- Part Two ---
  *
@@ -106,3 +112,9 @@ export function part2(input) {
       return total;
     }, 0);
 }
+
+export let part2Examples = [
+
+];
+
+export let part2Answer = 0;
