@@ -1,18 +1,5 @@
 'use strict';
 
-const UP = '(';
-const DOWN = ')';
-const ACTIONS = {
-  [UP]: (val) => val + 1,
-  [DOWN]: (val) => val - 1,
-};
-
-function forEachChar(str, fn) {
-  for (let i = 0, len = str.length; i < len; i++) {
-    fn(str[i], i, str);
-  }
-}
-
 /**
  * --- Day 1: Not Quite Lisp ---
  *
@@ -48,15 +35,36 @@ function forEachChar(str, fn) {
  * To what floor do the instructions take Santa?
  */
 
+const UP = '(';
+const DOWN = ')';
+const ACTIONS = {
+  [UP]: (val) => val + 1,
+  [DOWN]: (val) => val - 1,
+};
+
 export function part1(input) {
-  let curFloor = 0;
+  let floor = 0;
 
-  forEachChar(input, (char) => {
-    curFloor = ACTIONS[char](curFloor);
-  });
+  for (let i = 0; i < input.length; i++) {
+    let command = ACTIONS[input[i]] || ((val) => val);
 
-  return curFloor;
+    floor = command(floor);
+  }
+
+  return floor;
 }
+
+export let part1Examples = [
+  { input: '(())', value: 0 },
+  { input: '()()', value: 0 },
+  { input: '(((', value: 3 },
+  { input: '(()(()(', value: 3 },
+  { input: '))(((((', value: 3 },
+  { input: '())', value: -1 },
+  { input: '))(', value: -1 },
+  { input: ')))', value: -3 },
+  { input: ')())())', value: -3 },
+];
 
 export let part1Answer = 74;
 
@@ -77,19 +85,23 @@ export let part1Answer = 74;
  */
 
 export function part2(input) {
-  let curFloor = 0;
-  let basementPosition = null;
+  let floor = 0;
 
-  forEachChar(input, (char, i) => {
-    curFloor = ACTIONS[char](curFloor);
+  for (let i = 0; i < input.length; i++) {
+    let command = ACTIONS[input[i]] || ((val) => val);
 
-    if (curFloor < 0 && basementPosition === null) {
-      basementPosition = i + 1;
-    }
-  });
+    floor = command(floor);
 
-  return basementPosition;
+    if (floor < 0) { return i + 1; }
+  }
+
+  return null;
 }
+
+export let part2Examples = [
+  { input: ')', value: 1 },
+  { input: '()())', value: 5 },
+];
 
 export let part2Answer = 1795;
 
