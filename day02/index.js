@@ -1,11 +1,9 @@
 'use strict';
 
-const DIMENSIONS_REGEX = /^(\d*)x(\d*)x(\d*)/;
-
 function sortNumbers(a, b) { return a - b; }
 
-function parseDimensions(str) {
-  const [ length, width, height ] = str.match(DIMENSIONS_REGEX)
+function parseLine(str) {
+  const [ length, width, height ] = str.match(/^(\d*)x(\d*)x(\d*)/)
     .slice(1, 4)
     .map((num) => parseInt(num, 10));
 
@@ -36,22 +34,20 @@ function parseDimensions(str) {
  * wrapping paper should they order?
  */
 
-function wrappingPaper(length, width, height) {
-  const lw = length * width;
-  const wh = width * height;
-  const hl = height * length;
-
-  const main = 2 * (lw + wh + hl);
-  const extra = [ lw, wh, hl ].sort(sortNumbers)[0];
-
-  return main + extra;
-}
-
 export function part1(input) {
   return input.split('\n').reduce((total, line) => {
-    const { length, width, height } = parseDimensions(line);
+    let { length, width, height } = parseLine(line);
 
-    return total + wrappingPaper(length, width, height);
+    let lw = length * width;
+    let wh = width * height;
+    let hl = height * length;
+
+    let surfaceArea = 2 * (lw + wh + hl);
+    let extra = [ lw, wh, hl ].sort(sortNumbers)[0];
+
+    let totalPaper = surfaceArea + extra;
+
+    return total + totalPaper;
   }, 0);
 }
 
@@ -88,20 +84,18 @@ export let part1Answer = 1606483;
  * How many total feet of ribbon should they order?
  */
 
-function ribbons(length, width, height) {
-  const EXTRA_LENGTH = length * width * height;
-
-  return [ length, width, height ]
-    .sort(sortNumbers)
-    .slice(0, 2)
-    .reduce((total, len) => total + (len * 2), EXTRA_LENGTH);
-}
-
 export function part2(input) {
   return input.split('\n').reduce((total, line) => {
-    const { length, width, height } = parseDimensions(line);
+    let { length, width, height } = parseLine(line);
 
-    return total + ribbons(length, width, height);
+    let extraLength = length * width * height;
+
+    let ribbonLength = [ length, width, height ]
+      .sort(sortNumbers)
+      .slice(0, 2)
+      .reduce((ribbon, len) => ribbon + (len * 2), extraLength);
+
+    return total + ribbonLength;
   }, 0);
 }
 
