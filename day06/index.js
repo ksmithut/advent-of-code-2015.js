@@ -1,9 +1,7 @@
 'use strict';
 
-const COMMAND_PARSE = /^(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)$/;
-
 function parseCommand(line) {
-  let [ , action, x1, y1, x2, y2 ] = line.match(COMMAND_PARSE);
+  let [ , action, x1, y1, x2, y2 ] = line.match(/^(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)$/);
 
   return {
     action,
