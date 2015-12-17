@@ -1,27 +1,5 @@
 'use strict';
 
-const PARSE_LINE = /^(\w*) to (\w*) = (\d*)$/;
-
-function parseLine(line) {
-  let [ , city1, city2, distance ] = line.match(PARSE_LINE);
-
-  return { city1, city2, distance: parseInt(distance, 10) };
-}
-
-function getPermutation(array, start = 0, result = []) {
-  if (start >= array.length) {
-    result.push(array.slice(0));
-    return result;
-  }
-
-  for (let i = start; i < array.length; i++) {
-    [ array[i], array[start] ] = [ array[start], array[i] ];
-    result = getPermutation(array, start + 1, result);
-    [ array[i], array[start] ] = [ array[start], array[i] ];
-  }
-  return result;
-}
-
 /**
  * --- Day 9: All in a Single Night ---
  *
@@ -51,6 +29,26 @@ function getPermutation(array, start = 0, result = []) {
  *
  * What is the distance of the shortest route?
  */
+
+function parseLine(line) {
+  let [ , city1, city2, distance ] = line.match(/^(\w*) to (\w*) = (\d*)$/);
+
+  return { city1, city2, distance: parseInt(distance, 10) };
+}
+
+function getPermutation(array, start = 0, result = []) {
+  if (start >= array.length) {
+    result.push(array.slice(0));
+    return result;
+  }
+
+  for (let i = start; i < array.length; i++) {
+    [ array[i], array[start] ] = [ array[start], array[i] ];
+    result = getPermutation(array, start + 1, result);
+    [ array[i], array[start] ] = [ array[start], array[i] ];
+  }
+  return result;
+}
 
 export function part1(input) {
 
@@ -85,7 +83,14 @@ export function part1(input) {
 }
 
 export let part1Examples = [
-
+  {
+    input: [
+      'London to Dublin = 464',
+      'London to Belfast = 518',
+      'Dublin to Belfast = 141',
+    ].join('\n'),
+    value: 605,
+  },
 ];
 
 export let part1Answer = 251;
@@ -135,7 +140,14 @@ export function part2(input) {
 }
 
 export let part2Examples = [
-
+  {
+    input: [
+      'London to Dublin = 464',
+      'London to Belfast = 518',
+      'Dublin to Belfast = 141',
+    ].join('\n'),
+    value: 982,
+  },
 ];
 
 export let part2Answer = 898;

@@ -97,7 +97,7 @@ function once(fn) {
  * what signal is ultimately provided to wire a?
  */
 
-export function part1(input) {
+export function part1(input, wire = 'a') {
 
   const wires = {};
 
@@ -110,11 +110,26 @@ export function part1(input) {
     wires[wireName] = once(() => COMMANDS[command](input1, input2));
   });
 
-  return wires.a();
+  return wires[wire]();
 }
 
 export let part1Examples = [
-
+  {
+    input: [
+      [
+        '123 -> x',
+        '456 -> y',
+        'x AND y -> d',
+        'x OR y -> e',
+        'x LSHIFT 2 -> f',
+        'y RSHIFT 2 -> g',
+        'NOT x -> h',
+        'NOT y -> i',
+      ].join('\n'),
+      'g',
+    ],
+    value: 114,
+  },
 ];
 
 export let part1Answer = 956;
@@ -127,7 +142,7 @@ export let part1Answer = 956;
  * provided to wire a?
  */
 
-export function part2(input) {
+export function part2(input, wire = 'a') {
 
   const wires = {};
 
@@ -144,7 +159,7 @@ export function part2(input) {
     wires[wireName] = once(() => COMMANDS[command](input1, input2));
   });
 
-  return wires.a();
+  return wires[wire]();
 }
 
 export let part2Examples = [

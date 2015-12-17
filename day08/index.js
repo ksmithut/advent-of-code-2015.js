@@ -61,7 +61,10 @@ export function part1(input) {
 }
 
 export let part1Examples = [
-
+  { input: '""', value: 2 },
+  { input: '"abc"', value: 2 },
+  { input: '"aaa\\"aaa"', value: 3 },
+  { input: '"\\x27"', value: 5 },
 ];
 
 export let part1Answer = 1371;
@@ -105,7 +108,10 @@ export function part2(input) {
 }
 
 export let part2Examples = [
-
+  { input: '""', value: 4 },
+  { input: '"abc"', value: 4 },
+  { input: '"aaa\\"aaa"', value: 6 },
+  { input: '"\\x27"', value: 5 },
 ];
 
 export let part2Answer = 2117;
