@@ -49,9 +49,11 @@ function runPart(method, mainInput, answer, examples = []) {
   if (!method) { return console.log('Not Implemented'); }
 
   examples.forEach(({ input, value }) => {
-    let output = method(input);
+    input = Array.isArray(input) ? input : [ input ];
 
-    if (method(input) === value) {
+    let output = method(...input);
+
+    if (output === value) {
       console.log(` ${RIGHT} ${input} = ${value}`);
     } else {
       console.log(` ${WRONG} expected ${value}, given ${output}`);
