@@ -36,7 +36,7 @@ function parseLine(line) {
   return { city1, city2, distance: parseInt(distance, 10) };
 }
 
-function getPermutation(array, start = 0, result = []) {
+function getPermutations(array, start = 0, result = []) {
   if (start >= array.length) {
     result.push(array.slice(0));
     return result;
@@ -44,14 +44,13 @@ function getPermutation(array, start = 0, result = []) {
 
   for (let i = start; i < array.length; i++) {
     [ array[i], array[start] ] = [ array[start], array[i] ];
-    result = getPermutation(array, start + 1, result);
+    result = getPermutations(array, start + 1, result);
     [ array[i], array[start] ] = [ array[start], array[i] ];
   }
   return result;
 }
 
-export function part1(input) {
-
+function getRoutes(input) {
   let distanceMapping = {};
 
   input.split('\n').forEach((line) => {
@@ -65,21 +64,24 @@ export function part1(input) {
   });
 
   let possibleCities = Object.keys(distanceMapping);
-  let permutations = getPermutation(possibleCities);
+  let permutations = getPermutations(possibleCities);
 
-  let shortestDistance = permutations.reduce((shortest, permutation) => {
-    let distance = 0;
+  return permutations.reduce((arr, permutation) => {
+    permutation.distance = permutation.reduce((total, index, i) => {
+      if (i === 0) { return total; }
 
-    for (let i = 1; i < permutation.length; i++) {
-      distance += distanceMapping[permutation[i - 1]][permutation[i]];
-    }
+      return total + distanceMapping[permutation[i - 1]][permutation[i]];
+    }, 0);
 
-    if (shortest === null || distance < shortest) { return distance; }
-    return shortest;
+    arr.push(permutation);
+    return arr;
+  }, []);
+}
+
+export function part1(input) {
+  return getRoutes(input).reduce((shortest, { distance }) => {
+    return (shortest === null || distance < shortest) ? distance : shortest;
   }, null);
-
-  return shortestDistance;
-
 }
 
 export let part1Examples = [
@@ -110,33 +112,9 @@ export let part1Answer = 251;
  * What is the distance of the longest route?
  */
 export function part2(input) {
-  let distanceMapping = {};
-
-  input.split('\n').forEach((line) => {
-    let { city1, city2, distance } = parseLine(line);
-
-    distanceMapping[city1] = distanceMapping[city1] || {};
-    distanceMapping[city1][city2] = distance;
-
-    distanceMapping[city2] = distanceMapping[city2] || {};
-    distanceMapping[city2][city1] = distance;
-  });
-
-  let possibleCities = Object.keys(distanceMapping);
-  let permutations = getPermutation(possibleCities);
-
-  let longestDistance = permutations.reduce((longest, permutation) => {
-    let distance = 0;
-
-    for (let i = 1; i < permutation.length; i++) {
-      distance += distanceMapping[permutation[i - 1]][permutation[i]];
-    }
-
-    if (longest === null || distance > longest) { return distance; }
-    return longest;
+  return getRoutes(input).reduce((longest, { distance }) => {
+    return (longest === null || distance > longest) ? distance : longest;
   }, null);
-
-  return longestDistance;
 }
 
 export let part2Examples = [

@@ -56,12 +56,10 @@ function describeNumber(input) {
   return output;
 }
 
-export function part1(input) {
-  const ITERATIONS = 40;
-
+export function part1(input, iterations = 40) {
   let output = input;
 
-  for (let i = 0; i < ITERATIONS; i++) {
+  for (let i = 0; i < iterations; i++) {
     output = describeNumber(output);
   }
 
@@ -69,7 +67,11 @@ export function part1(input) {
 }
 
 export let part1Examples = [
-
+  { input: [ '1', 1 ], value: 2 },
+  { input: [ '11', 1 ], value: 2 },
+  { input: [ '21', 1 ], value: 4 },
+  { input: [ '1211', 1 ], value: 6 },
+  { input: [ '111221', 1 ], value: 6 },
 ];
 
 export let part1Answer = 252594;
@@ -85,19 +87,7 @@ export let part1Answer = 252594;
  */
 
 export function part2(input) {
-  const ITERATIONS = 50;
-
-  let output = input;
-
-  for (let i = 0; i < ITERATIONS; i++) {
-    output = describeNumber(output);
-  }
-
-  return output.length;
+  return part1(input, 50);
 }
-
-export let part2Examples = [
-
-];
 
 export let part2Answer = 3579328;

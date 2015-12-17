@@ -114,10 +114,6 @@ export function part1(input) {
   return nextPassword;
 }
 
-export let part1Examples = [
-
-];
-
 export let part1Answer = 'hxbxxyzz';
 
 /**
@@ -129,9 +125,5 @@ export let part1Answer = 'hxbxxyzz';
 export function part2(input) {
   return part1(part1(input));
 }
-
-export let part2Examples = [
-
-];
 
 export let part2Answer = 'hxcaabcc';
