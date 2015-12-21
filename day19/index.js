@@ -97,6 +97,8 @@ export let part1Examples = [
   },
 ];
 
+export let part1Answer = 535;
+
 /**
  * --- Part Two ---
  *
