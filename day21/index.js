@@ -92,6 +92,60 @@ const RINGS = [
   { cost: 80, damage: 0, armor: 3 },
 ];
 
-export function part1(input) {
+function getPermutations(arr, min = 0, max = Infinity) {
+  let permutations = [];
+
+  if (min >= max) { }
+
+  if (min === 0) { permutations.push([ null ]); }
+}
+
+console.log(getPermutations([1, 2, 3]));
+
+function possibleCombos(items) {
+  if (!items.length) { return []; }
+
+  let subItems = possibleCombos(items.splice(1));
+  let { min = 0, max = 1, inventory = [] } = items[0];
+
+  let possibilities = [];
+
+  return subItems.reduce((possibilities, subItem) => {
+    for (let i = min; i <= max; i++) {
+
+    }
+  }, []);
+}
+
+const PARSE_MAP = {
+  'Hit Points': 'hitPoints',
+  'Damage': 'damage',
+  'Armor': 'armor',
+};
+
+function parseStats(input) {
+  return input.split('\n').reduce((stats, line) => {
+    let [ stat, value ] = line.split(': ');
+
+    stats[PARSE_MAP[stat]] = parseInt(value, 10);
+  }, {});
+}
+
+function maxTurns(attacker, defender) {
+  let dmgPerTurn = attacker.damage - defender.armor;
+
+  if (dmgPerTurn < 1) { dmgPerTurn = 1; }
+
+  return defender.hitPoints / dmgPerTurn;
+}
+
+function canWin(player, boss) {
+  return Math.ceil(maxTurns(player, boss)) > Math.floor(maxTurns(boss, player));
+}
+
+export function part1(input, hitPoints = 100) {
+  let boss = parseStats(input);
+  let player = { hitPoints, damage: 0, armor: 0 };
+
 
 }
