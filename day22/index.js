@@ -161,26 +161,77 @@ function parseStats(input) {
   }, {});
 }
 
-function memoize(fn) {
-  let cache = {};
+// function memoize(fn) {
+//   let cache = {};
+//
+//   return function(...args) {
+//     let key = JSON.stringify(args);
+//
+//     cache[key] = cache[key] || { value: fn(...args) };
+//
+//     return cache[key].value;
+//   };
+// }
 
-  return function(...args) {
-    let key = JSON.stringify(args);
+function copy(obj) { return JSON.parse(JSON.stringify(obj)); }
 
-    cache[key] = cache[key] || { value: fn(...args) };
+const DEFAULT_SPELL = {
+  damage: 0,
+  armor: 0,
+  heal: 0,
+  mana: 0,
+  duration: null,
+};
 
-    return cache[key].value;
-  };
+const SPELLS = [
+  { name: 'Magic Missle', cost: 53, damage: 4 },
+  { name: 'Drain', cost: 73, damage: 2, heal: 2 },
+  { name: 'Shield', cost: 113, armor: 7, duration: 6 },
+  { name: 'Poison', cost: 173, damage: 3, duration: 6 },
+  { name: 'Recharge', cost: 229, mana: 101, duration: 5 },
+].map((spell) => Object.assign({}, DEFAULT_SPELL, spell));
+
+function round(boss, player, activeSpells = {}) {
+  let solutions = [];
+
+  boss = copy(boss);
+  player = player(player);
+  activeSpells = activeSpells.slice(0);
+
+  // ===========
+  // Player Turn
+  // ===========
+
+  // Select Spell to cast
+  //   - You cannot select a spell that is already in effect
+  //   - If you can't afford one, then you lose
+  let possibleSpells = SPELLS
+    .filter(({ cost }, i) => !activeSpells[i] && cost <= player.mana);
+
+  // Apply spell affects
+  //   - Decrease timer
+  //   - Wear off
+
+  // Cast a spell
+
+  // =========
+  // Boss Turn
+  // =========
+
+  // Apply spell affects
+  //   - Decrease timer
+  //   - Wear off
+
+  // Boss attacks
+  //   - Apply armor
+
 }
-
-let round = memoize((solutions, boss, player, activeSpells = []) => {
-
-});
 
 
 export function part1(input, player = { health = 50, mana = 100 }) {
   let boss = parseStats(input);
-  let solutions = [];
 
-  round({ })
+  let outcomes = round(boss, player);
+
+
 }
