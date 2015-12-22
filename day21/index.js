@@ -95,25 +95,42 @@ const RINGS = [
 function getPermutations(arr, min = 0, max = Infinity) {
   let permutations = [];
 
-  if (min >= max) { }
+  if (max < 0) { return permutations; }
+  if (min === 0) { permutations.push([]); }
 
-  if (min === 0) { permutations.push([ null ]); }
+  arr.forEach((elem, i) => {
+    let subMin = min - 1;
+    let subArr = arr.slice(0);
+
+    if (subMin < 0) { subMin = 0; }
+    subArr.splice(i);
+
+    getPermutations(subArr, subMin, max - 1).forEach((permutation) => {
+      permutations.push([ elem, ...permutation ]);
+    });
+  });
+
+  return permutations;
 }
 
-console.log(getPermutations([1, 2, 3]));
-
 function possibleCombos(items) {
-  if (!items.length) { return []; }
 
-  let subItems = possibleCombos(items.splice(1));
-  let { min = 0, max = 1, inventory = [] } = items[0];
+  let mainPermutation = items.slice(0)[0];
+  let subPermutations = items.slice(0);
 
-  let possibilities = [];
+  subPermutations.splice(0, 1);
 
-  return subItems.reduce((possibilities, subItem) => {
-    for (let i = min; i <= max; i++) {
+  if (!subPermutations.length) {
+    return mainPermutation;
+  }
 
-    }
+  let subCombos = possibleCombos(subPermutations);
+
+  return mainPermutation.reduce((combos, permutation) => {
+    subCombos.forEach((subPermutation) => {
+      combos.push(permutation.concat(subPermutation));
+    });
+    return combos;
   }, []);
 }
 
@@ -128,24 +145,81 @@ function parseStats(input) {
     let [ stat, value ] = line.split(': ');
 
     stats[PARSE_MAP[stat]] = parseInt(value, 10);
+    return stats;
   }, {});
 }
 
-function maxTurns(attacker, defender) {
-  let dmgPerTurn = attacker.damage - defender.armor;
+function damage(attacker, defender) {
+  let dmg = attacker.damage - defender.armor;
 
-  if (dmgPerTurn < 1) { dmgPerTurn = 1; }
-
-  return defender.hitPoints / dmgPerTurn;
+  return (dmg < 1) ? 1 : dmg;
 }
 
-function canWin(player, boss) {
-  return Math.ceil(maxTurns(player, boss)) > Math.floor(maxTurns(boss, player));
+function getCombos(player) {
+  return possibleCombos([
+    getPermutations(WEAPONS, 1, 1),
+    getPermutations(ARMOR, 0, 1),
+    getPermutations(RINGS, 0, 2),
+  ])
+  .map((combo) => {
+    return combo.reduce((equippedPlayer, item) => {
+      equippedPlayer.damage += item.damage;
+      equippedPlayer.armor += item.armor;
+      equippedPlayer.cost = (equippedPlayer.cost || 0) + item.cost;
+      return equippedPlayer;
+    }, JSON.parse(JSON.stringify(player)));
+  });
+}
+
+function canWin(player1, player2) {
+  let player1Hp = player1.hitPoints;
+  let player2Hp = player2.hitPoints;
+
+  while (player1Hp > 0 && player2Hp > 0) {
+    // player 1 attacks
+    player2Hp -= damage(player1, player2);
+    if (player2Hp <= 0) { break; }
+
+    // player 2 attacks
+    player1Hp -= damage(player2, player1);
+  }
+
+  return player1Hp > 0;
 }
 
 export function part1(input, hitPoints = 100) {
   let boss = parseStats(input);
   let player = { hitPoints, damage: 0, armor: 0 };
 
-
+  return getCombos(player)
+    .filter((equippedPlayer) => canWin(equippedPlayer, boss))
+    .reduce((minCost, winningPlayer) => {
+      if (minCost === null || winningPlayer.cost < minCost) { return winningPlayer.cost; }
+      return minCost;
+    }, null);
 }
+
+export let part1Answer = 78;
+
+/**
+ * --- Part Two ---
+ *
+ * Turns out the shopkeeper is working with the boss, and can persuade you to
+ * buy whatever items he wants. The other rules still apply, and he still only
+ * has one of each item.
+ *
+ * What is the most amount of gold you can spend and still lose the fight?
+ */
+export function part2(input, hitPoints = 100) {
+  let boss = parseStats(input);
+  let player = { hitPoints, damage: 0, armor: 0 };
+
+  return getCombos(player)
+    .filter((equippedPlayer) => !canWin(equippedPlayer, boss))
+    .reduce((maxCost, losingPlayer) => {
+      if (maxCost === null || losingPlayer.cost > maxCost) { return losingPlayer.cost; }
+      return maxCost;
+    }, null);
+}
+
+export let part2Answer = 148;
