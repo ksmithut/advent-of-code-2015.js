@@ -161,9 +161,26 @@ function parseStats(input) {
   }, {});
 }
 
+function memoize(fn) {
+  let cache = {};
+
+  return function(...args) {
+    let key = JSON.stringify(args);
+
+    cache[key] = cache[key] || { value: fn(...args) };
+
+    return cache[key].value;
+  };
+}
+
+let round = memoize((solutions, boss, player, activeSpells = []) => {
+
+});
 
 
-export function part1(input, { health = 50, mana = 500 } = {}) {
+export function part1(input, player = { health = 50, mana = 100 }) {
   let boss = parseStats(input);
+  let solutions = [];
 
+  round({ })
 }
