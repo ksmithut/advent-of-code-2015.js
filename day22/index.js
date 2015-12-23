@@ -191,39 +191,70 @@ const SPELLS = [
   { name: 'Recharge', cost: 229, mana: 101, duration: 5 },
 ].map((spell) => Object.assign({}, DEFAULT_SPELL, spell));
 
+function applySpells(boss, player, activeSpells) {
+
+  player.armor = 0;
+
+  return Object.keys(activeSpells).reduce((newSpells, spellId) => {
+    let spell = copy(activeSpells[spellId]);
+
+    player.health += spell.heal;
+    player.mana += spell.mana;
+    player.armor += spell.armor;
+    boss.health -= spell.damage;
+
+    if (--spell.duration > 0) { newSpells[spellId] = spell; }
+
+    return newSpells;
+  }, {});
+}
+
 function round(boss, player, activeSpells = {}) {
   let solutions = [];
 
   boss = copy(boss);
   player = player(player);
-  activeSpells = activeSpells.slice(0);
 
   // ===========
   // Player Turn
   // ===========
 
+  // Apply spell effects
+  //   - Decrease timer
+  //   - Wear off
+  activeSpells = applySpells(boss, player, activeSpells);
+
   // Select Spell to cast
   //   - You cannot select a spell that is already in effect
   //   - If you can't afford one, then you lose
   let possibleSpells = SPELLS
-    .filter(({ cost }, i) => !activeSpells[i] && cost <= player.mana);
+    .filter(({ cost, name }) => !activeSpells[name] && cost <= player.mana);
 
-  // Apply spell affects
-  //   - Decrease timer
-  //   - Wear off
+  // If you can't afford a spell, you lose
+  if (possibleSpells.length === 0) { return false; }
 
-  // Cast a spell
+  // If the boss dies, then you win :) solution found
+  if (boss.health <= 0) { return true; }
 
-  // =========
-  // Boss Turn
-  // =========
+  possibleSpells.forEach((spell) => {
 
-  // Apply spell affects
-  //   - Decrease timer
-  //   - Wear off
+    // Cast a spell
+    if (spell.duration) {
+      activeSpells[spell.name] = copy(spell);
+    }
 
-  // Boss attacks
-  //   - Apply armor
+    // =========
+    // Boss Turn
+    // =========
+
+    // Apply spell effects
+    //   - Decrease timer
+    //   - Wear off
+
+    // Boss attacks
+    //   - Apply armor
+
+  });
 
 }
 
