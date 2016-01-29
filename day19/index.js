@@ -130,3 +130,32 @@ export let part1Answer = 535;
  * and the medicine molecule in your puzzle input, what is the fewest number of
  * steps to go from e to the medicine molecule?
  */
+
+ /**
+  * Rules found in inputs:
+  *
+  * 1. Two types of inputs:
+  *   - `e => XX` and `X => XX` where `X` is not `Rn`, `Y`, or `Ar`
+  *   - `X => X Rn X Ar` or `X => X Rn X Y X Ar` or `X => X Rn X Y X Y X Ar`
+  *
+  * 2. `Rn Y Ar` can be thought of as `( , )`
+  *   so second type of input in rule 1 can be:
+  *   `X => X(X)` or `X => X(X,X)` or `X => X(X,X,X)`
+  */
+
+function countStr(input, searchStr) {
+  let regex = (searchStr instanceof RegExp)
+    ? searchStr
+    : new RegExp(searchStr, 'g');
+  let matches = input.match(regex) || [];
+
+  return matches.length;
+}
+
+export function part2(input) {
+  let { lines, molecule } = parseInput(input);
+
+  let count = countStr.bind(null, molecule);
+
+  return count(/[A-Z]/g) - count('Rn') - count('Ar') - 2 * count('Y') - 1;
+}
