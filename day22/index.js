@@ -259,10 +259,9 @@ function round(boss, player, activeSpells = {}) {
 }
 
 
-export function part1(input, player = { health = 50, mana = 100 }) {
+export function part1(input, player = { health: 50, mana: 100 }) {
   let boss = parseStats(input);
 
   let outcomes = round(boss, player);
-
 
 }
