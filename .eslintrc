@@ -5,13 +5,8 @@
   "ecmaFeatures": {
     "modules": true
   },
-  "extends": "eslint-config-ksmithut/es6",
+  "extends": "eslint-config-ksmithut/es6-node",
   "rules": {
-    "strict": 0,
-    "global-require": 0,
-    "no-console": 0,
-    "prefer-const": 0,
-    "valid-jsdoc": 0,
-    "no-continue": 0,
+
   }
 }
