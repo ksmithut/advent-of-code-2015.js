@@ -40,25 +40,25 @@ const MOVEMENTS = {
   ')': (val) => val - 1
 }
 
-exports.part1 = (input) => {
-  return input
-    .split('')
-    .reduce((floor, char) => MOVEMENTS[char](floor), 0)
+exports.part1 = {
+  fn(input) {
+    return input
+      .split('')
+      .reduce((floor, char) => MOVEMENTS[char](floor), 0)
+  },
+  answer: 74,
+  examples: [
+    { input: '(())', value: 0 },
+    { input: '()()', value: 0 },
+    { input: '(((', value: 3 },
+    { input: '(()(()(', value: 3 },
+    { input: '))(((((', value: 3 },
+    { input: '())', value: -1 },
+    { input: '))(', value: -1 },
+    { input: ')))', value: -3 },
+    { input: ')())())', value: -3 },
+  ]
 }
-
-exports.part1Examples = [
-  { input: '(())', value: 0 },
-  { input: '()()', value: 0 },
-  { input: '(((', value: 3 },
-  { input: '(()(()(', value: 3 },
-  { input: '))(((((', value: 3 },
-  { input: '())', value: -1 },
-  { input: '))(', value: -1 },
-  { input: ')))', value: -3 },
-  { input: ')())())', value: -3 },
-];
-
-exports.part1Answer = 74
 
 /**
  * --- Part Two ---
@@ -76,20 +76,20 @@ exports.part1Answer = 74
  * basement?
  */
 
-exports.part2 = (input) => {
-  let floor = 0
-  const basementIndex = input
-    .split('')
-    .findIndex((char) => {
-      floor = MOVEMENTS[char](floor)
-      return floor < 0
-    })
-  return basementIndex + 1
+exports.part2 = {
+  fn(input) {
+    let floor = 0
+    const basementIndex = input
+      .split('')
+      .findIndex((char) => {
+        floor = MOVEMENTS[char](floor)
+        return floor < 0
+      })
+    return basementIndex + 1
+  },
+  answer: 1795,
+  examples: [
+    { input: ')', value: 1 },
+    { input: '()())', value: 5 }
+  ]
 }
-
-exports.part2Examples = [
-  { input: ')', value: 1 },
-  { input: '()())', value: 5 }
-]
-
-exports.part2Answer = 1795
