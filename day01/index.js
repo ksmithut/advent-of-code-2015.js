@@ -1,12 +1,5 @@
 'use strict';
 
-const UP = '(';
-const DOWN = ')';
-const ACTIONS = {
-  [UP]: (val) => val + 1,
-  [DOWN]: (val) => val - 1,
-};
-
 /**
  * --- Day 1: Not Quite Lisp ---
  *
@@ -42,19 +35,17 @@ const ACTIONS = {
  * To what floor do the instructions take Santa?
  */
 
-export function part1(input) {
-  let floor = 0;
-
-  for (let i = 0; i < input.length; i++) {
-    let command = ACTIONS[input[i]] || ((val) => val);
-
-    floor = command(floor);
-  }
-
-  return floor;
+const MOVEMENTS = {
+  '(': (val) => val + 1,
+  ')': (val) => val - 1
 }
 
-export let part1Examples = [
+exports.part1 = (input) => {
+  return input.split('')
+    .reduce((floor, char) => MOVEMENTS[char](floor), 0)
+}
+
+exports.part1Examples = [
   { input: '(())', value: 0 },
   { input: '()()', value: 0 },
   { input: '(((', value: 3 },
@@ -66,7 +57,7 @@ export let part1Examples = [
   { input: ')())())', value: -3 },
 ];
 
-export let part1Answer = 74;
+exports.part1Answer = 74
 
 /**
  * --- Part Two ---
@@ -84,24 +75,18 @@ export let part1Answer = 74;
  * basement?
  */
 
-export function part2(input) {
-  let floor = 0;
-
-  for (let i = 0; i < input.length; i++) {
-    let command = ACTIONS[input[i]] || ((val) => val);
-
-    floor = command(floor);
-
-    if (floor < 0) { return i + 1; }
-  }
-
-  return null;
+exports.part2 = (input) => {
+  let floor = 0
+  return input.split('')
+    .findIndex((char) => {
+      floor = MOVEMENTS[char](floor)
+      return floor < 0
+    }) + 1
 }
 
-export let part2Examples = [
+exports.part2Examples = [
   { input: ')', value: 1 },
-  { input: '()())', value: 5 },
-];
+  { input: '()())', value: 5 }
+]
 
-export let part2Answer = 1795;
-
+exports.part2Answer = 1795
