@@ -41,7 +41,8 @@ const MOVEMENTS = {
 }
 
 exports.part1 = (input) => {
-  return input.split('')
+  return input
+    .split('')
     .reduce((floor, char) => MOVEMENTS[char](floor), 0)
 }
 
@@ -77,11 +78,13 @@ exports.part1Answer = 74
 
 exports.part2 = (input) => {
   let floor = 0
-  return input.split('')
+  const basementIndex = input
+    .split('')
     .findIndex((char) => {
       floor = MOVEMENTS[char](floor)
       return floor < 0
-    }) + 1
+    })
+  return basementIndex + 1
 }
 
 exports.part2Examples = [
