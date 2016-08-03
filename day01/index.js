@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 1: Not Quite Lisp ---

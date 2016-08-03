@@ -1,14 +1,4 @@
-'use strict';
-
-function sortNumbers(a, b) { return a - b; }
-
-function parseLine(str) {
-  const [ length, width, height ] = str.match(/^(\d*)x(\d*)x(\d*)/)
-    .slice(1, 4)
-    .map((num) => parseInt(num, 10));
-
-  return { length, width, height };
-}
+'use strict'
 
 /**
  * The elves are running low on wrapping paper, and so they need to submit an
@@ -34,29 +24,37 @@ function parseLine(str) {
  * wrapping paper should they order?
  */
 
-export function part1(input) {
-  return input.split('\n').reduce((total, line) => {
-    let { length, width, height } = parseLine(line);
-
-    let lw = length * width;
-    let wh = width * height;
-    let hl = height * length;
-
-    let surfaceArea = 2 * (lw + wh + hl);
-    let extra = [ lw, wh, hl ].sort(sortNumbers)[0];
-
-    let totalPaper = surfaceArea + extra;
-
-    return total + totalPaper;
-  }, 0);
+const parseLine = (line) => {
+  const parts = line.match(/(\d*)x(\d*)x(\d*)/)
+  return {
+    length: parseInt(parts[1], 10),
+    width: parseInt(parts[2], 10),
+    height: parseInt(parts[3], 10)
+  }
 }
+const sortNumbers = (a, b) => a - b
+const sum = (arr) => arr.reduce((total, num) => total + num)
+const min = (arr) => Math.min.apply(Math, arr)
+const surfaceArea = (sides) => 2 * sum(sides)
 
-export let part1Examples = [
-  { input: '2x3x4', value: 58 },
-  { input: '1x1x10', value: 43 },
-];
-
-export let part1Answer = 1606483;
+exports.part1 = {
+  fn(input) {
+    return input.split('\n').reduce((total, line) => {
+      const parts = parseLine(line)
+      const sides = [
+        parts.length * parts.width,
+        parts.width * parts.height,
+        parts.height * parts.length
+      ]
+      return total + surfaceArea(sides) + min(sides)
+    }, 0)
+  },
+  answer: 1606483,
+  examples: [
+    { input: '2x3x4', value: 58 },
+    { input: '1x1x10', value: 43 },
+  ]
+}
 
 /**
  * --- Part Two ---
@@ -84,24 +82,28 @@ export let part1Answer = 1606483;
  * How many total feet of ribbon should they order?
  */
 
-export function part2(input) {
-  return input.split('\n').reduce((total, line) => {
-    let { length, width, height } = parseLine(line);
+const cubicArea = (sides) => sides.reduce((total, side) => total * side)
 
-    let extraLength = length * width * height;
-
-    let ribbonLength = [ length, width, height ]
-      .sort(sortNumbers)
-      .slice(0, 2)
-      .reduce((ribbon, len) => ribbon + (len * 2), extraLength);
-
-    return total + ribbonLength;
-  }, 0);
+exports.part2 = {
+  fn(input) {
+    return input.split('\n').reduce((total, line) => {
+      const parts = parseLine(line)
+      const dimensions = [
+        parts.length,
+        parts.width,
+        parts.height
+      ]
+      const perimeters = [
+        2 * (parts.length + parts.width),
+        2 * (parts.width + parts.height),
+        2 * (parts.height + parts.length)
+      ]
+      return total + cubicArea(dimensions) + min(perimeters)
+    }, 0)
+  },
+  answer: 3842356,
+  examples: [
+    { input: '2x3x4', value: 34 },
+    { input: '1x1x10', value: 14 },
+  ]
 }
-
-export let part2Examples = [
-  { input: '2x3x4', value: 34 },
-  { input: '1x1x10', value: 14 },
-];
-
-export let part2Answer = 3842356;
