@@ -34,9 +34,22 @@
  * How many strings are nice?
  */
 
+function totalMatch(input, criteria) {
+  return input
+    .split('\n')
+    .reduce((total, str) => {
+      const match = criteria.every((test) => test(str))
+      return total + (match ? 1 : 0)
+    }, 0)
+}
+
 exports.part1 = {
   fn(input) {
-
+    return totalMatch(input, [
+      (str) => (str.match(/[aeiou]/g) || []).length >= 3,
+      (str) => (/(\w)\1/).test(str),
+      (str) => !(/(ab|cd|pq|xy)/).test(str)
+    ])
   },
   answer: 238,
   examples: [
@@ -83,7 +96,10 @@ exports.part1 = {
 
 exports.part2 = {
   fn(input) {
-
+    return totalMatch(input, [
+      (str) => (/(\w{2}).*\1/).test(str),
+      (str) => (/(\w)\w\1/).test(str)
+    ])
   },
   answer: 69,
   examples: [
