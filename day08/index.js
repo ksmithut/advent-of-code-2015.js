@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 8: Matchsticks ---
@@ -44,30 +44,9 @@
  * memory for string values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
  */
 
-export function part1(input) {
-  return input.split('\n').reduce((diff, line) => {
-    let evalled = line
-      .replace(/^"(.*)"$/, '$1')
-      .replace(/(\\x(.{2}))/g, (a, b, charCode) => {
-        let decimalVal = parseInt(charCode, 16);
+function part1(input) {
 
-        if (isNaN(decimalVal)) { return `\\x${charCode}`; }
-        return String.fromCharCode(decimalVal);
-      })
-      .replace(/\\([^x])/g, '$1');
-
-    return diff + (line.length - evalled.length);
-  }, 0);
 }
-
-export let part1Examples = [
-  { input: '""', value: 2 },
-  { input: '"abc"', value: 2 },
-  { input: '"aaa\\"aaa"', value: 3 },
-  { input: '"\\x27"', value: 5 },
-];
-
-export let part1Answer = 1371;
 
 /**
  * --- Part Two ---
@@ -95,23 +74,8 @@ export let part1Answer = 1371;
  * 19.
  */
 
-export function part2(input) {
-  return input.split('\n').reduce((diff, line) => {
-    let evalled = line
-      .replace(/\\/g, '\\\\')
-      .replace(/"/g, '\\"');
+function part2(input) {
 
-    evalled = `"${evalled}"`;
-
-    return diff + (evalled.length - line.length);
-  }, 0);
 }
 
-export let part2Examples = [
-  { input: '""', value: 4 },
-  { input: '"abc"', value: 4 },
-  { input: '"aaa\\"aaa"', value: 6 },
-  { input: '"\\x27"', value: 5 },
-];
-
-export let part2Answer = 2117;
+module.exports = { part1, part2 }

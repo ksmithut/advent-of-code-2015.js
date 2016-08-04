@@ -45,23 +45,15 @@ const houseSet = () => {
   }
 }
 
-exports.part1 = {
-  fn(input) {
-    const houses = houseSet()
-    let position = { x: 0, y: 0 }
+function part1(input) {
+  const houses = houseSet()
+  let position = { x: 0, y: 0 }
+  houses.visit(position)
+  input.split('').forEach((char) => {
+    position = ACTIONS[char](position)
     houses.visit(position)
-    input.split('').forEach((char) => {
-      position = ACTIONS[char](position)
-      houses.visit(position)
-    })
-    return houses.visited
-  },
-  answer: 2565,
-  examples: [
-    { input: '>', value: 2 },
-    { input: '^>v<', value: 4 },
-    { input: '^v^v^v^v^v', value: 2 },
-  ]
+  })
+  return houses.visited
 }
 
 /**
@@ -97,28 +89,22 @@ const rotator = (length) => {
   }
 }
 
-exports.part2 = {
-  fn(input) {
-    const houses = houseSet()
-    const positions = [
-      { x: 0, y: 0 },
-      { x: 0, y: 0 }
-    ]
-    const getNext = rotator(positions.length)
-    positions.forEach(houses.visit)
-    input.split('').forEach((char) => {
-      const index = getNext()
-      let position = positions[index]
-      position = ACTIONS[char](position)
-      houses.visit(position)
-      positions[index] = position
-    })
-    return houses.visited
-  },
-  answer: 2639,
-  examples: [
-    { input: '^v', value: 3 },
-    { input: '^>v<', value: 3 },
-    { input: '^v^v^v^v^v', value: 11 },
+function part2(input) {
+  const houses = houseSet()
+  const positions = [
+    { x: 0, y: 0 },
+    { x: 0, y: 0 }
   ]
+  const getNext = rotator(positions.length)
+  positions.forEach(houses.visit)
+  input.split('').forEach((char) => {
+    const index = getNext()
+    let position = positions[index]
+    position = ACTIONS[char](position)
+    houses.visit(position)
+    positions[index] = position
+  })
+  return houses.visited
 }
+
+module.exports = { part1, part2 }

@@ -43,22 +43,12 @@ function totalMatch(input, criteria) {
     }, 0)
 }
 
-exports.part1 = {
-  fn(input) {
-    return totalMatch(input, [
-      (str) => (str.match(/[aeiou]/g) || []).length >= 3,
-      (str) => (/(\w)\1/).test(str),
-      (str) => !(/(ab|cd|pq|xy)/).test(str)
-    ])
-  },
-  answer: 238,
-  examples: [
-    { input: 'ugknbfddgicrmopn', value: 1 },
-    { input: 'aaa', value: 1 },
-    { input: 'jchzalrnumimnmhp', value: 0 },
-    { input: 'haegwjzuvuyypxyu', value: 0 },
-    { input: 'dvszwmarrgswjxmb', value: 0 },
-  ]
+function part1(input) {
+  return totalMatch(input, [
+    (str) => (str.match(/[aeiou]/g) || []).length >= 3,
+    (str) => (/(\w)\1/).test(str),
+    (str) => !(/(ab|cd|pq|xy)/).test(str)
+  ])
 }
 
 /**
@@ -94,18 +84,11 @@ exports.part1 = {
  * How many strings are nice under these new rules?
  */
 
-exports.part2 = {
-  fn(input) {
-    return totalMatch(input, [
-      (str) => (/(\w{2}).*\1/).test(str),
-      (str) => (/(\w)\w\1/).test(str)
-    ])
-  },
-  answer: 69,
-  examples: [
-    { input: 'qjhvhtzxzqqjkmpb', value: 1 },
-    { input: 'xxyxx', value: 1 },
-    { input: 'uurcxstgmygtbstg', value: 0 },
-    { input: 'ieodomkazucvgmuy', value: 0 },
-  ]
+function part2(input) {
+  return totalMatch(input, [
+    (str) => (/(\w{2}).*\1/).test(str),
+    (str) => (/(\w)\w\1/).test(str)
+  ])
 }
+
+module.exports = { part1, part2 }

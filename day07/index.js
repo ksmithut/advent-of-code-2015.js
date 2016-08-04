@@ -1,40 +1,4 @@
-'use strict';
-
-const PARSE_GATE = /(\b[a-z0-9]*\b)? ?(AND|OR|LSHIFT|RSHIFT|NOT)? ?(\b[a-z0-9]*\b)? -> (\w*)$/;
-
-const COMMANDS = {
-  ASSIGN: (a) => a(),
-  AND: (a, b) => a() & b(),
-  OR: (a, b) => a() | b(),
-  LSHIFT: (a, b) => a() << b(),
-  RSHIFT: (a, b) => a() >> b(),
-  NOT: (a, b) => ~b(),
-};
-
-function parseLine(line) {
-  let [ , input1, command, input2, wireName ] = line.match(PARSE_GATE);
-
-  return { input1, command, input2, wireName };
-}
-
-function normalize(input, wires) {
-  let parsedInput = parseInt(input, 10);
-
-  return isNaN(parsedInput) ? () => wires[input]() : () => parsedInput;
-}
-
-function once(fn) {
-  let called = false;
-  let value;
-
-  return () => {
-    if (!called) {
-      called = true;
-      value = fn();
-    }
-    return value;
-  };
-}
+'use strict'
 
 /**
  * --- Day 7: Some Assembly Required ---
@@ -97,42 +61,9 @@ function once(fn) {
  * what signal is ultimately provided to wire a?
  */
 
-export function part1(input, wire = 'a') {
+function part1(input, startingLetter) {
 
-  const wires = {};
-
-  input.split('\n').forEach((line) => {
-    let { input1, command = 'ASSIGN', input2, wireName } = parseLine(line);
-
-    input1 = normalize(input1, wires);
-    input2 = normalize(input2, wires);
-
-    wires[wireName] = once(() => COMMANDS[command](input1, input2));
-  });
-
-  return wires[wire]();
 }
-
-export let part1Examples = [
-  {
-    input: [
-      [
-        '123 -> x',
-        '456 -> y',
-        'x AND y -> d',
-        'x OR y -> e',
-        'x LSHIFT 2 -> f',
-        'y RSHIFT 2 -> g',
-        'NOT x -> h',
-        'NOT y -> i',
-      ].join('\n'),
-      'g',
-    ],
-    value: 114,
-  },
-];
-
-export let part1Answer = 956;
 
 /**
  * --- Part Two ---
@@ -142,28 +73,8 @@ export let part1Answer = 956;
  * provided to wire a?
  */
 
-export function part2(input, wire = 'a') {
+function part2(input, startingLetter) {
 
-  const wires = {};
-
-  input.split('\n').forEach((line) => {
-    let { input1, command = 'ASSIGN', input2, wireName } = parseLine(line);
-
-    if (wireName === 'b') {
-      input1 = part1(input);
-    }
-
-    input1 = normalize(input1, wires);
-    input2 = normalize(input2, wires);
-
-    wires[wireName] = once(() => COMMANDS[command](input1, input2));
-  });
-
-  return wires[wire]();
 }
 
-export let part2Examples = [
-
-];
-
-export let part2Answer = 40149;
+module.exports = { part1, part2 }

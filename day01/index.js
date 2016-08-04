@@ -42,24 +42,10 @@ const ACTIONS = {
   [DOWN]: (val) => val - 1
 }
 
-exports.part1 = {
-  fn(input) {
-    return input
-      .split('')
-      .reduce((floor, char) => ACTIONS[char](floor), 0)
-  },
-  answer: 74,
-  examples: [
-    { input: '(())', value: 0 },
-    { input: '()()', value: 0 },
-    { input: '(((', value: 3 },
-    { input: '(()(()(', value: 3 },
-    { input: '))(((((', value: 3 },
-    { input: '())', value: -1 },
-    { input: '))(', value: -1 },
-    { input: ')))', value: -3 },
-    { input: ')())())', value: -3 },
-  ]
+function part1(input) {
+  return input
+    .split('')
+    .reduce((floor, char) => ACTIONS[char](floor), 0)
 }
 
 /**
@@ -78,20 +64,15 @@ exports.part1 = {
  * basement?
  */
 
-exports.part2 = {
-  fn(input) {
-    let floor = 0
-    const basementIndex = input
-      .split('')
-      .findIndex((char) => {
-        floor = ACTIONS[char](floor)
-        return floor < 0
-      })
-    return basementIndex + 1
-  },
-  answer: 1795,
-  examples: [
-    { input: ')', value: 1 },
-    { input: '()())', value: 5 }
-  ]
+function part2(input) {
+  let floor = 0
+  const basementIndex = input
+    .split('')
+    .findIndex((char) => {
+      floor = ACTIONS[char](floor)
+      return floor < 0
+    })
+  return basementIndex + 1
 }
+
+module.exports = { part1, part2 }

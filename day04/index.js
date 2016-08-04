@@ -38,15 +38,8 @@ function hashStartsWith(input, check) {
   return num
 }
 
-exports.part1 = {
-  fn(input) {
-    return hashStartsWith(input, '00000')
-  },
-  answer: 282749,
-  examples: [
-    { input: 'abcdef', value: 609043 },
-    { input: 'pqrstuv', value: 1048970 },
-  ]
+function part1(input) {
+  return hashStartsWith(input, '00000')
 }
 
 /**
@@ -55,9 +48,8 @@ exports.part1 = {
  * Now find one that starts with six zeroes.
  */
 
-exports.part2 = {
-  fn(input) {
-    return hashStartsWith(input, '000000')
-  },
-  answer: 9962624
+function part2(input) {
+  return hashStartsWith(input, '000000')
 }
+
+module.exports = { part1, part2 }

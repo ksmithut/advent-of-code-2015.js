@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 9: All in a Single Night ---
@@ -30,72 +30,9 @@
  * What is the distance of the shortest route?
  */
 
-function parseLine(line) {
-  let [ , city1, city2, distance ] = line.match(/^(\w*) to (\w*) = (\d*)$/);
+function part1(input) {
 
-  return { city1, city2, distance: parseInt(distance, 10) };
 }
-
-function getPermutations(array, start = 0, result = []) {
-  if (start >= array.length) {
-    result.push(array.slice(0));
-    return result;
-  }
-
-  for (let i = start; i < array.length; i++) {
-    [ array[i], array[start] ] = [ array[start], array[i] ];
-    result = getPermutations(array, start + 1, result);
-    [ array[i], array[start] ] = [ array[start], array[i] ];
-  }
-  return result;
-}
-
-function getRoutes(input) {
-  let distanceMapping = {};
-
-  input.split('\n').forEach((line) => {
-    let { city1, city2, distance } = parseLine(line);
-
-    distanceMapping[city1] = distanceMapping[city1] || {};
-    distanceMapping[city1][city2] = distance;
-
-    distanceMapping[city2] = distanceMapping[city2] || {};
-    distanceMapping[city2][city1] = distance;
-  });
-
-  let possibleCities = Object.keys(distanceMapping);
-  let permutations = getPermutations(possibleCities);
-
-  return permutations.reduce((arr, permutation) => {
-    permutation.distance = permutation.reduce((total, index, i) => {
-      if (i === 0) { return total; }
-
-      return total + distanceMapping[permutation[i - 1]][permutation[i]];
-    }, 0);
-
-    arr.push(permutation);
-    return arr;
-  }, []);
-}
-
-export function part1(input) {
-  return getRoutes(input).reduce((shortest, { distance }) => {
-    return (shortest === null || distance < shortest) ? distance : shortest;
-  }, null);
-}
-
-export let part1Examples = [
-  {
-    input: [
-      'London to Dublin = 464',
-      'London to Belfast = 518',
-      'Dublin to Belfast = 141',
-    ].join('\n'),
-    value: 605,
-  },
-];
-
-export let part1Answer = 251;
 
 /**
  * --- Part Two ---
@@ -111,21 +48,9 @@ export let part1Answer = 251;
  *
  * What is the distance of the longest route?
  */
-export function part2(input) {
-  return getRoutes(input).reduce((longest, { distance }) => {
-    return (longest === null || distance > longest) ? distance : longest;
-  }, null);
+
+function part2(input) {
+
 }
 
-export let part2Examples = [
-  {
-    input: [
-      'London to Dublin = 464',
-      'London to Belfast = 518',
-      'Dublin to Belfast = 141',
-    ].join('\n'),
-    value: 982,
-  },
-];
-
-export let part2Answer = 898;
+module.exports = { part1, part2 }

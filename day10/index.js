@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 10: Elves Look, Elves Say ---
@@ -29,52 +29,9 @@
  * What is the length of the result?
  */
 
-function repeatStr(str, num) {
-  return new Array(num + 1).join(str);
+function part1(input, start) {
+
 }
-
-function describeNumber(input) {
-  let curChar = null;
-  let curLength = 0;
-  let output = '';
-
-  for (let i = 0, len = input.length; i < len; i++) {
-    if (!curChar) {
-      curChar = input[i];
-      curLength = 1;
-    } else if (input[i] === curChar) {
-      curLength++;
-    } else {
-      output += curLength + curChar;
-      curLength = 1;
-      curChar = input[i];
-    }
-  }
-
-  output += curLength + curChar;
-
-  return output;
-}
-
-export function part1(input, iterations = 40) {
-  let output = input;
-
-  for (let i = 0; i < iterations; i++) {
-    output = describeNumber(output);
-  }
-
-  return output.length;
-}
-
-export let part1Examples = [
-  { input: [ '1', 1 ], value: 2 },
-  { input: [ '11', 1 ], value: 2 },
-  { input: [ '21', 1 ], value: 4 },
-  { input: [ '1211', 1 ], value: 6 },
-  { input: [ '111221', 1 ], value: 6 },
-];
-
-export let part1Answer = 252594;
 
 /**
  * --- Part Two ---
@@ -86,8 +43,8 @@ export let part1Answer = 252594;
  * 50 times. What is the length of the new result?
  */
 
-export function part2(input) {
-  return part1(input, 50);
+function part2(input, start) {
+
 }
 
-export let part2Answer = 3579328;
+module.exports = { part1, part2 }

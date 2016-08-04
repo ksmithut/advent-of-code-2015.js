@@ -37,23 +37,16 @@ const sum = (arr) => arr.reduce((total, num) => total + num)
 const min = (arr) => Math.min.apply(Math, arr)
 const surfaceArea = (sides) => 2 * sum(sides)
 
-exports.part1 = {
-  fn(input) {
-    return input.split('\n').reduce((total, line) => {
-      const parts = parseLine(line)
-      const sides = [
-        parts.length * parts.width,
-        parts.width * parts.height,
-        parts.height * parts.length
-      ]
-      return total + surfaceArea(sides) + min(sides)
-    }, 0)
-  },
-  answer: 1606483,
-  examples: [
-    { input: '2x3x4', value: 58 },
-    { input: '1x1x10', value: 43 },
-  ]
+function part1(input) {
+  return input.split('\n').reduce((total, line) => {
+    const parts = parseLine(line)
+    const sides = [
+      parts.length * parts.width,
+      parts.width * parts.height,
+      parts.height * parts.length
+    ]
+    return total + surfaceArea(sides) + min(sides)
+  }, 0)
 }
 
 /**
@@ -84,26 +77,21 @@ exports.part1 = {
 
 const cubicArea = (sides) => sides.reduce((total, side) => total * side)
 
-exports.part2 = {
-  fn(input) {
-    return input.split('\n').reduce((total, line) => {
-      const parts = parseLine(line)
-      const dimensions = [
-        parts.length,
-        parts.width,
-        parts.height
-      ]
-      const perimeters = [
-        2 * (parts.length + parts.width),
-        2 * (parts.width + parts.height),
-        2 * (parts.height + parts.length)
-      ]
-      return total + cubicArea(dimensions) + min(perimeters)
-    }, 0)
-  },
-  answer: 3842356,
-  examples: [
-    { input: '2x3x4', value: 34 },
-    { input: '1x1x10', value: 14 },
-  ]
+function part2(input) {
+  return input.split('\n').reduce((total, line) => {
+    const parts = parseLine(line)
+    const dimensions = [
+      parts.length,
+      parts.width,
+      parts.height
+    ]
+    const perimeters = [
+      2 * (parts.length + parts.width),
+      2 * (parts.width + parts.height),
+      2 * (parts.height + parts.length)
+    ]
+    return total + cubicArea(dimensions) + min(perimeters)
+  }, 0)
 }
+
+module.exports = { part1, part2 }

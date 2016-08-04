@@ -1,40 +1,4 @@
-'use strict';
-
-function parseLine(line) {
-  let [ , action, x1, y1, x2, y2 ] = line.match(/^(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)$/);
-
-  return {
-    action,
-    x1: parseInt(x1, 10),
-    y1: parseInt(y1, 10),
-    x2: parseInt(x2, 10),
-    y2: parseInt(y2, 10),
-  };
-}
-
-function createLights(width, height, defaultVal = 0) {
-  return new Array(width)
-    .fill(null)
-    .map(() => new Array(height).fill(defaultVal));
-}
-
-function runLightCommands(input, width, height, actions) {
-  let lights = createLights(width, height);
-
-  input.split('\n').forEach((line) => {
-    let { action, x1, y1, x2, y2 } = parseLine(line);
-
-    for (let x = x1; x <= x2; x++) {
-      for (let y = y1; y <= y2; y++) {
-        lights[x][y] = actions[action](lights[x][y]);
-      }
-    }
-  });
-
-  return lights.reduce((total, col) => {
-    return total + col.reduce((totalCol, cell) => totalCol + cell, 0);
-  }, 0);
-}
+'use strict'
 
 /**
  * --- Day 6: Probably a Fire Hazard ---
@@ -69,24 +33,9 @@ function runLightCommands(input, width, height, actions) {
  * After following the instructions, how many lights are lit?
  */
 
-export function part1(input) {
-  return runLightCommands(input, 1000, 1000, {
-    'toggle': (val) => val ? 0 : 1,
-    'turn off': () => 0,
-    'turn on': () => 1,
-  });
+function part1(input) {
+
 }
-
-export let part1Examples = [
-  {
-    input: `turn on 0,0 through 999,999
-toggle 0,0 through 999,0
-turn off 499,499 through 500,500`,
-    value: 998996,
-  },
-];
-
-export let part1Answer = 543903;
 
 /**
  * --- Part Two ---
@@ -116,17 +65,8 @@ export let part1Answer = 543903;
  * toggle 0,0 through 999,999 would increase the total brightness by 2000000.
  */
 
-export function part2(input) {
-  return runLightCommands(input, 1000, 1000, {
-    'toggle': (val) => val + 2,
-    'turn off': (val) => val <= 0 ? 0 : val - 1,
-    'turn on': (val) => val + 1,
-  });
+function part2(input) {
+
 }
 
-export let part2Examples = [
-  { input: 'turn on 0,0 through 0,0', value: 1 },
-  { input: 'toggle 0,0 through 999,999', value: 2000000 },
-];
-
-export let part2Answer = 14687245;
+module.exports = { part1, part2 }

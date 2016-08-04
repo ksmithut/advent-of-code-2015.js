@@ -17,19 +17,29 @@ const NOT_CHECKED = chalk.cyan('-')
 program
   .parse(process.argv)
 
-Promise.resolve(program.args)
-  .mapSeries((day) => `day${padLeft(day, 2, '0')}`)
-  .mapSeries((day) => Promise.props({
-    input: fs.readFileAsync(relative(day, 'input.txt'), 'utf8'),
-    module: require(`./${day}`)
-  }))
-  .mapSeries((day) => {
-    console.log()
-    console.log('Part 1:\n-------')
-    runPart(day.module.part1, day.input)
-    console.log('Part 2:\n-------')
-    runPart(day.module.part2, day.input)
-  })
+if (program.args[0] === '*') {
+
+} else {
+  Promise.resolve(program.args)
+    .mapSeries(runDay)
+}
+
+function runDay(rawDay) {
+  return Promise
+    .resolve(`day${padLeft(rawDay, 2, '0')}`)
+    .then((day) => Promise.props({
+      input: fs.readFileAsync(relative(day, 'input.txt'), 'utf8'),
+      module: require(`./${day}`),
+      answers: require(`./${day}/answers`)
+    }))
+    .then((day) => {
+      console.log()
+      console.log('Part 1:\n-------')
+      runPart(day.module.part1, day.input, day.answers.part1)
+      console.log('Part 2:\n-------')
+      runPart(day.module.part2, day.input, day.answers.part2)
+    })
+}
 
 function padLeft(string, length, char) {
   const diff = length - string.length
@@ -37,11 +47,11 @@ function padLeft(string, length, char) {
   return new Array(diff).fill(char).join('') + string
 }
 
-function runPart(part, mainInput) {
-  const method = part.fn
-  const answer = part.answer
-  const examples = part.examples || []
-  if (!method) { return console.log('Not Implemented') }
+function runPart(part, mainInput, answers) {
+  const method = part
+  const answer = answers.answer
+  const examples = answers.examples || []
+  if (typeof method !== 'function') return console.log('Not Implemented')
 
   examples.forEach((example) => {
     let input = example.input
