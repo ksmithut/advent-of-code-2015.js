@@ -1,23 +1,6 @@
-'use strict';
+'use strict'
 
-import crypto from 'crypto';
-
-function getHash(data) {
-  return crypto
-    .createHash('md5')
-    .update(data)
-    .digest('hex');
-}
-
-function hashUntilStartsWith(start, secret) {
-  const LENGTH = start.length;
-
-  let i = 0;
-
-  while (getHash(secret + i).substr(0, LENGTH) !== start) { i++; }
-
-  return i;
-}
+const crypto = require('crypto')
 
 /**
  * --- Day 4: The Ideal Stocking Stuffer ---
@@ -42,16 +25,29 @@ function hashUntilStartsWith(start, secret) {
  * pqrstuv1048970 looks like 000006136ef....
  */
 
-export function part1(input) {
-  return hashUntilStartsWith('00000', input);
+function hash(data) {
+  return crypto
+    .createHash('md5')
+    .update(data)
+    .digest('hex')
 }
 
-export let part1Examples = [
-  { input: 'abcdef', value: 609043 },
-  { input: 'pqrstuv', value: 1048970 },
-];
+function hashStartsWith(input, check) {
+  let num = 0
+  while (hash(input.concat(num)).substr(0, check.length) !== check) num++
+  return num
+}
 
-export let part1Answer = 282749;
+exports.part1 = {
+  fn(input) {
+    return hashStartsWith(input, '00000')
+  },
+  answer: 282749,
+  examples: [
+    { input: 'abcdef', value: 609043 },
+    { input: 'pqrstuv', value: 1048970 },
+  ]
+}
 
 /**
  * --- Part Two ---
@@ -59,8 +55,9 @@ export let part1Answer = 282749;
  * Now find one that starts with six zeroes.
  */
 
-export function part2(input) {
-  return hashUntilStartsWith('000000', input);
+exports.part2 = {
+  fn(input) {
+    return hashStartsWith(input, '000000')
+  },
+  answer: 9962624
 }
-
-export let part2Answer = 9962624;
