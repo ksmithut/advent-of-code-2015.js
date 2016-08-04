@@ -1,47 +1,5 @@
 'use strict';
 
-const UP = '^';
-const RIGHT = '>';
-const DOWN = 'v';
-const LEFT = '<';
-const ACTIONS = {
-  [UP]: (pos) => pos.y--,
-  [DOWN]: (pos) => pos.y++,
-  [LEFT]: (pos) => pos.x--,
-  [RIGHT]: (pos) => pos.x++,
-};
-
-function runCouriers(numCouriers, input) {
-  let currentCourier = 0;
-  let visits = {};
-  let couriers = new Array(numCouriers)
-    .fill(null)
-    .map(() => ({ x: 0, y: 0 }));
-
-  function getCourier() {
-    if (++currentCourier >= couriers.length) { currentCourier = 0; }
-    return couriers[currentCourier];
-  }
-
-  function visit(x, y) {
-    const key = `${x}x${y}`;
-
-    visits[key] = visits[key] || 0;
-    visits[key]++;
-  }
-
-  visit(0, 0);
-
-  for (let i = 0, len = input.length; i < len; i++) {
-    const pos = getCourier();
-
-    ACTIONS[input[i]](pos);
-    visit(pos.x, pos.y);
-  }
-
-  return Object.keys(visits).length;
-}
-
 /**
  * --- Day 3: Perfectly Spherical Houses in a Vacuum ---
  *
@@ -69,17 +27,49 @@ function runCouriers(numCouriers, input) {
  * houses.
  */
 
-export function part1(input) {
-  return runCouriers(1, input);
+const UP = '^'
+const DOWN = 'v'
+const LEFT = '<'
+const RIGHT = '>'
+const ACTIONS = {
+  [UP]: (pos) => ({ x: pos.x, y: pos.y - 1 }),
+  [DOWN]: (pos) => ({ x: pos.x, y: pos.y + 1 }),
+  [LEFT]: (pos) => ({ x: pos.x - 1, y: pos.y }),
+  [RIGHT]: (pos) => ({ x: pos.x + 1, y: pos.y })
+}
+const houseSet = () => {
+  const houses = new Set()
+  return {
+    visit: (pos) => houses.add(`${pos.x}:${pos.y}`),
+    get visited() { return houses.size() }
+  }
+}
+const rotator = (length) => {
+  let current = 0
+  return () => {
+    current = current >= arr.length ? 0 : current
+    return current++
+  }
 }
 
-export let part1Examples = [
-  { input: '>', value: 2 },
-  { input: '^>v<', value: 4 },
-  { input: '^v^v^v^v^v', value: 2 },
-];
-
-export let part1Answer = 2565;
+exports.part1 = {
+  fn(input) {
+    const houses = houseSet()
+    let position = { x: 0, y: 0 }
+    houses.visit(position)
+    input.split('').forEach((char) => {
+      position = ACTIONS[char](position)
+      houses.visit(position)
+    })
+    return houses.visited
+  },
+  answer: 2565,
+  examples: [
+    { input: '>', value: 2 },
+    { input: '^>v<', value: 4 },
+    { input: '^v^v^v^v^v', value: 2 },
+  ]
+}
 
 /**
  * --- Part Two ---
@@ -106,14 +96,24 @@ export let part1Answer = 2565;
  * and Robo-Santa going the other.
  */
 
-export function part2(input) {
-  return runCouriers(2, input);
+exports.part2 = {
+  fn(input) {
+    const houses = houseSet()
+    const getPosition = rotator([
+      { x: 0, y: 0 },
+      { x: 0, y: 0 }
+    ])
+    positions.forEach(houses.visit)
+    input.split('').forEach((char) => {
+      position = ACTIONS[char](position)
+      houses.visit(position)
+    })
+    return houses.visited
+  },
+  answer: 2639,
+  examples: [
+    { input: '^v', value: 3 },
+    { input: '^>v<', value: 3 },
+    { input: '^v^v^v^v^v', value: 11 },
+  ]
 }
-
-export let part2Examples = [
-  { input: '^v', value: 3 },
-  { input: '^>v<', value: 3 },
-  { input: '^v^v^v^v^v', value: 11 },
-];
-
-export let part2Answer = 2639;
