@@ -1,14 +1,4 @@
-'use strict';
-
-function totalNice(input, conditions) {
-  return input
-    .split('\n')
-    .reduce((total, str) => {
-      let isNice = conditions.every((condition) => condition(str));
-
-      return total + (isNice ? 1 : 0);
-    }, 0);
-}
+'use strict'
 
 /**
  * --- Day 5: Doesn't He Have Intern-Elves For This? ---
@@ -44,26 +34,19 @@ function totalNice(input, conditions) {
  * How many strings are nice?
  */
 
-export function part1(input) {
-  return totalNice(input, [
-    // At least three vowels
-    (str) => (str.match(/[aeiou]/g) || []).length >= 3,
-    // Contains at least one letter that appers twice in a row
-    (str) => (/(\w)\1/).test(str),
-    // Must not contain certain string combinations
-    (str) => !(/(ab|cd|pq|xy)/).test(str),
-  ]);
+exports.part1 = {
+  fn(input) {
+
+  },
+  answer: 238,
+  examples: [
+    { input: 'ugknbfddgicrmopn', value: 1 },
+    { input: 'aaa', value: 1 },
+    { input: 'jchzalrnumimnmhp', value: 0 },
+    { input: 'haegwjzuvuyypxyu', value: 0 },
+    { input: 'dvszwmarrgswjxmb', value: 0 },
+  ]
 }
-
-export let part1Examples = [
-  { input: 'ugknbfddgicrmopn', value: 1 },
-  { input: 'aaa', value: 1 },
-  { input: 'jchzalrnumimnmhp', value: 0 },
-  { input: 'haegwjzuvuyypxyu', value: 0 },
-  { input: 'dvszwmarrgswjxmb', value: 0 },
-];
-
-export let part1Answer = 238;
 
 /**
  * --- Part Two ---
@@ -98,20 +81,15 @@ export let part1Answer = 238;
  * How many strings are nice under these new rules?
  */
 
-export function part2(input) {
-  return totalNice(input, [
-    // One letter between repeated letters
-    (str) => (/(\w)\w\1/).test(str),
-    // Have two repeating
-    (str) => (/(\w{2}).*\1/).test(str),
-  ]);
+exports.part2 = {
+  fn(input) {
+
+  },
+  answer: 69,
+  examples: [
+    { input: 'qjhvhtzxzqqjkmpb', value: 1 },
+    { input: 'xxyxx', value: 1 },
+    { input: 'uurcxstgmygtbstg', value: 0 },
+    { input: 'ieodomkazucvgmuy', value: 0 },
+  ]
 }
-
-export let part2Examples = [
-  { input: 'qjhvhtzxzqqjkmpb', value: 1 },
-  { input: 'xxyxx', value: 1 },
-  { input: 'uurcxstgmygtbstg', value: 0 },
-  { input: 'ieodomkazucvgmuy', value: 0 },
-];
-
-export let part2Answer = 69;
