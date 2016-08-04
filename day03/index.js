@@ -41,14 +41,7 @@ const houseSet = () => {
   const houses = new Set()
   return {
     visit: (pos) => houses.add(`${pos.x}:${pos.y}`),
-    get visited() { return houses.size() }
-  }
-}
-const rotator = (length) => {
-  let current = 0
-  return () => {
-    current = current >= arr.length ? 0 : current
-    return current++
+    get visited() { return houses.size }
   }
 }
 
@@ -96,17 +89,29 @@ exports.part1 = {
  * and Robo-Santa going the other.
  */
 
+const rotator = (length) => {
+  let current = 0
+  return () => {
+    current = current >= length ? 0 : current
+    return current++
+  }
+}
+
 exports.part2 = {
   fn(input) {
     const houses = houseSet()
-    const getPosition = rotator([
+    const positions = [
       { x: 0, y: 0 },
       { x: 0, y: 0 }
-    ])
+    ]
+    const getNext = rotator(positions.length)
     positions.forEach(houses.visit)
     input.split('').forEach((char) => {
+      const index = getNext()
+      let position = positions[index]
       position = ACTIONS[char](position)
       houses.visit(position)
+      positions[index] = position
     })
     return houses.visited
   },
