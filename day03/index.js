@@ -32,15 +32,15 @@ const DOWN = 'v'
 const LEFT = '<'
 const RIGHT = '>'
 const ACTIONS = {
-  [UP]: (pos) => ({ x: pos.x, y: pos.y - 1 }),
-  [DOWN]: (pos) => ({ x: pos.x, y: pos.y + 1 }),
-  [LEFT]: (pos) => ({ x: pos.x - 1, y: pos.y }),
-  [RIGHT]: (pos) => ({ x: pos.x + 1, y: pos.y })
+  [UP]: ({ x, y }) => ({ x, y: y - 1 }),
+  [DOWN]: ({ x, y }) => ({ x, y: y + 1 }),
+  [LEFT]: ({ x, y }) => ({ x: x - 1, y }),
+  [RIGHT]: ({ x, y }) => ({ x: x + 1, y })
 }
 const houseSet = () => {
   const houses = new Set()
   return {
-    visit: (pos) => houses.add(`${pos.x}:${pos.y}`),
+    visit: ({ x, y }) => houses.add(`${x}:${y}`),
     get visited() { return houses.size }
   }
 }

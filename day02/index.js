@@ -25,11 +25,11 @@
  */
 
 const parseLine = (line) => {
-  const parts = line.match(/(\d*)x(\d*)x(\d*)/)
+  const [, length, width, height] = line.match(/(\d*)x(\d*)x(\d*)/)
   return {
-    length: parseInt(parts[1], 10),
-    width: parseInt(parts[2], 10),
-    height: parseInt(parts[3], 10)
+    length: parseInt(length, 10),
+    width: parseInt(width, 10),
+    height: parseInt(height, 10)
   }
 }
 const sortNumbers = (a, b) => a - b
@@ -39,11 +39,11 @@ const surfaceArea = (sides) => 2 * sum(sides)
 
 function part1(input) {
   return input.split('\n').reduce((total, line) => {
-    const parts = parseLine(line)
+    const { length, width, height } = parseLine(line)
     const sides = [
-      parts.length * parts.width,
-      parts.width * parts.height,
-      parts.height * parts.length
+      length * width,
+      width * height,
+      height * length
     ]
     return total + surfaceArea(sides) + min(sides)
   }, 0)
@@ -79,16 +79,16 @@ const cubicArea = (sides) => sides.reduce((total, side) => total * side)
 
 function part2(input) {
   return input.split('\n').reduce((total, line) => {
-    const parts = parseLine(line)
+    const { length, width, height } = parseLine(line)
     const dimensions = [
-      parts.length,
-      parts.width,
-      parts.height
+      length,
+      width,
+      height
     ]
     const perimeters = [
-      2 * (parts.length + parts.width),
-      2 * (parts.width + parts.height),
-      2 * (parts.height + parts.length)
+      2 * (length + width),
+      2 * (width + height),
+      2 * (height + length)
     ]
     return total + cubicArea(dimensions) + min(perimeters)
   }, 0)
