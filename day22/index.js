@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 22: Wizard Simulator 20XX ---
@@ -147,20 +147,6 @@
  * negative mana.)
  */
 
-const PARSE_MAP = {
-  'Hit Points': 'hitPoints',
-  'Damage': 'damage',
-};
-
-function parseStats(input) {
-  return input.split('\n').reduce((stats, line) => {
-    let [ stat, value ] = line.split(': ');
-
-    stats[PARSE_MAP[stat]] = parseInt(value, 10);
-    return stats;
-  }, {});
-}
-
 // function memoize(fn) {
 //   let cache = {};
 //
@@ -173,95 +159,7 @@ function parseStats(input) {
 //   };
 // }
 
-function copy(obj) { return JSON.parse(JSON.stringify(obj)); }
 
-const DEFAULT_SPELL = {
-  damage: 0,
-  armor: 0,
-  heal: 0,
-  mana: 0,
-  duration: null,
-};
-
-const SPELLS = [
-  { name: 'Magic Missle', cost: 53, damage: 4 },
-  { name: 'Drain', cost: 73, damage: 2, heal: 2 },
-  { name: 'Shield', cost: 113, armor: 7, duration: 6 },
-  { name: 'Poison', cost: 173, damage: 3, duration: 6 },
-  { name: 'Recharge', cost: 229, mana: 101, duration: 5 },
-].map((spell) => Object.assign({}, DEFAULT_SPELL, spell));
-
-function applySpells(boss, player, activeSpells) {
-
-  player.armor = 0;
-
-  return Object.keys(activeSpells).reduce((newSpells, spellId) => {
-    let spell = copy(activeSpells[spellId]);
-
-    player.health += spell.heal;
-    player.mana += spell.mana;
-    player.armor += spell.armor;
-    boss.health -= spell.damage;
-
-    if (--spell.duration > 0) { newSpells[spellId] = spell; }
-
-    return newSpells;
-  }, {});
-}
-
-function round(boss, player, activeSpells = {}) {
-  let solutions = [];
-
-  boss = copy(boss);
-  player = player(player);
-
-  // ===========
-  // Player Turn
-  // ===========
-
-  // Apply spell effects
-  //   - Decrease timer
-  //   - Wear off
-  activeSpells = applySpells(boss, player, activeSpells);
-
-  // Select Spell to cast
-  //   - You cannot select a spell that is already in effect
-  //   - If you can't afford one, then you lose
-  let possibleSpells = SPELLS
-    .filter(({ cost, name }) => !activeSpells[name] && cost <= player.mana);
-
-  // If you can't afford a spell, you lose
-  if (possibleSpells.length === 0) { return false; }
-
-  // If the boss dies, then you win :) solution found
-  if (boss.health <= 0) { return true; }
-
-  possibleSpells.forEach((spell) => {
-
-    // Cast a spell
-    if (spell.duration) {
-      activeSpells[spell.name] = copy(spell);
-    }
-
-    // =========
-    // Boss Turn
-    // =========
-
-    // Apply spell effects
-    //   - Decrease timer
-    //   - Wear off
-
-    // Boss attacks
-    //   - Apply armor
-
-  });
-
-}
-
-
-export function part1(input, player = { health: 50, mana: 100 }) {
-  let boss = parseStats(input);
-
-  let outcomes = round(boss, player);
+function part1(input, player = { health: 50, mana: 100 }) {
 
 }

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 20: Infinite Elves and Infinite Houses ---
@@ -40,36 +40,9 @@
  * as the number in your puzzle input?
  */
 
-function getFactors(num) {
-  let factors = [ num ];
+function part1(input) {
 
-  for (let i = Math.floor(num / 2); i > 0; i--) {
-    if (num % i === 0) { factors.push(i); }
-  }
-
-  return factors;
 }
-
-function countPresents(houses, multiplier = 10) {
-  return getFactors(houses).reduce((total, factor) => {
-    return total + (factor * multiplier);
-  }, 0);
-}
-
-export function part1(input) {
-  let minimum = parseInt(input, 10);
-
-  let numHouses = 0;
-  let numPresents = 0;
-
-  while (numPresents < minimum) {
-    numPresents = countPresents(++numHouses);
-  }
-
-  return numHouses;
-}
-
-export let part1Answer = 831600;
 
 /**
  * --- Part Two ---
@@ -83,30 +56,8 @@ export let part1Answer = 831600;
  * at least as many presents as the number in your puzzle input?
  */
 
-function countPresents2(houses, multiplier = 11) {
-  return getFactors(houses).reduce((total, factor) => {
-    if (factor * 50 < houses) { return total; }
-    return total + (factor * multiplier);
-  }, 0);
+function part2(input) {
+
 }
 
-export function part2(input) {
-  let minimum = parseInt(input, 10);
-
-  let numHouses = 0;
-  let numPresents = 0;
-
-  let maximum = 0;
-
-  while (numPresents < minimum) {
-    numPresents = countPresents2(++numHouses);
-    if (numPresents > maximum) {
-      maximum = numPresents;
-      console.log(input - maximum);
-    }
-  }
-
-  return numHouses;
-}
-
-export let part2Answer = 884520;
+module.exports = { part1, part2 }

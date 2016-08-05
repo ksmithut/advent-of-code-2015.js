@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 19: Medicine for Rudolph ---
@@ -47,57 +47,10 @@
  * How many distinct molecules can be created after all the different ways you
  * can do one replacement on the medicine molecule?
  */
-function replaceAt(str, index, char, length) {
-  return str.substr(0, index) + char + str.substr(index + length);
+
+function part1(input) {
+
 }
-
-function parseInput(input) {
-  let [ lines, molecule ] = input.split('\n\n');
-
-  lines = lines.split('\n').reduce((substitutions, line) => {
-    let [ , chars, replacement ] = line.match(/^(\w*) => (\w*)$/);
-
-    substitutions[chars] = substitutions[chars] || [];
-    substitutions[chars].push(replacement);
-    return substitutions;
-  }, {});
-
-  return { lines, molecule };
-}
-
-export function part1(input) {
-  let { lines, molecule } = parseInput(input);
-
-  let possibilities = Object.keys(lines).reduce((possible, chars) => {
-    molecule.replace(new RegExp(chars, 'g'), (match, i) => {
-      lines[chars].forEach((replacement) => {
-        let possibility = replaceAt(molecule, i, replacement, chars.length);
-
-        if (possible.indexOf(possibility) === -1) {
-          possible.push(possibility);
-        }
-      });
-    });
-    return possible;
-  }, []);
-
-  return possibilities.length;
-}
-
-export let part1Examples = [
-  {
-    input: [
-      'H => HO',
-      'H => OH',
-      'O => HH',
-      '',
-      'HOH',
-    ].join('\n'),
-    value: 4,
-  },
-];
-
-export let part1Answer = 535;
 
 /**
  * --- Part Two ---
@@ -143,19 +96,8 @@ export let part1Answer = 535;
   *   `X => X(X)` or `X => X(X,X)` or `X => X(X,X,X)`
   */
 
-function countStr(input, searchStr) {
-  let regex = (searchStr instanceof RegExp)
-    ? searchStr
-    : new RegExp(searchStr, 'g');
-  let matches = input.match(regex) || [];
+function part2(input) {
 
-  return matches.length;
 }
 
-export function part2(input) {
-  let { lines, molecule } = parseInput(input);
-
-  let count = countStr.bind(null, molecule);
-
-  return count(/[A-Z]/g) - count('Rn') - count('Ar') - 2 * count('Y') - 1;
-}
+module.exports = { part1, part2 }

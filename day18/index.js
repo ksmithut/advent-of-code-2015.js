@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 18: Like a GIF For Your Yard ---
@@ -86,123 +86,9 @@
  * lights are on after 100 steps?
  */
 
-const ON = 1;
-const OFF = 0;
-
-const INITIAL_VALUE = {
-  '.': OFF,
-  '#': ON,
-};
-
-function createGrid(input) {
-  return input.split('\n').reduce((grid, line) => {
-    let column = [];
-
-    for (let i = 0; i < line.length; i++) {
-      column.push({
-        state: INITIAL_VALUE[line[i]],
-        nextState: null,
-      });
-    }
-
-    grid.push(column);
-    return grid;
-  }, []);
+function part1(input, steps) {
+  steps = steps || 100
 }
-
-function neighbors(x, y, grid) {
-  let totalOn = 0;
-
-  for (let i = x - 1; i <= x + 1; i++) {
-    for (let j = y - 1; j <= y + 1; j++) {
-      if (i === x && j === y) { continue; }
-
-      let state = (grid[i] && grid[i][j] && grid[i][j].state) || OFF;
-
-      if (state === ON) { totalOn++; }
-    }
-  }
-
-  return totalOn;
-}
-
-function nextState1(x, y, grid) {
-  let isOn = grid[x][y].state === 1;
-  let numNeighbors = neighbors(x, y, grid);
-
-  if (isOn) {
-    if (numNeighbors !== 2 && numNeighbors !== 3) {
-      grid[x][y].nextState = OFF;
-    } else {
-      grid[x][y].nextState = ON;
-    }
-    return;
-  }
-
-  if (numNeighbors === 3) {
-    grid[x][y].nextState = ON;
-  } else {
-    grid[x][y].nextState = OFF;
-  }
-
-}
-
-function runStep(grid, nextState) {
-  for (let x = 0; x < grid.length; x++) {
-    for (let y = 0; y < grid[x].length; y++) {
-      nextState(x, y, grid);
-    }
-  }
-
-  for (let x = 0; x < grid.length; x++) {
-    for (let y = 0; y < grid[x].length; y++) {
-      grid[x][y].state = grid[x][y].nextState;
-    }
-  }
-}
-
-function printGrid(grid) {
-  let output = '';
-
-  for (let i = 0; i < grid[0].length; i++) {
-    for (let j = 0; j < grid.length; j++) {
-      output += grid[i][j].state;
-    }
-    output += '\n';
-  }
-  return output;
-}
-
-export function part1(input, steps = 100) {
-  let grid = createGrid(input);
-
-  for (let i = 0; i < steps; i++) {
-    runStep(grid, nextState1);
-  }
-
-  return grid.reduce((total, col) => {
-    return col.reduce((totalCol, cell) => totalCol + cell.state, total);
-  }, 0);
-}
-
-export let part1Examples = [
-  {
-    input: [
-      [
-        '.#.#.#',
-        '...##.',
-        '#....#',
-        '..#...',
-        '#.#..#',
-        '####..',
-      ].join('\n'),
-      4,
-    ],
-    value: 4,
-  },
-];
-
-export let part1Answer = 814;
 
 /**
  * --- Part Two ---
@@ -267,48 +153,8 @@ export let part1Answer = 814;
  * steps?
  */
 
-function nextState2(x, y, grid) {
-  let isTopOrBottom = x === 0 || x === grid.length - 1;
-  let isLeftOrRight = y === 0 || y === grid[grid.length - 1].length - 1;
-
-  if (isTopOrBottom && isLeftOrRight) {
-    grid[x][y].nextState = ON;
-    return;
-  }
-
-  nextState1(x, y, grid);
+function part2(input, steps = 100) {
+  steps = steps || 100
 }
 
-export function part2(input, steps = 100) {
-  let grid = createGrid(input);
-
-  grid[0][0].state = ON;
-  grid[0][grid[0].length - 1].state = ON;
-  grid[grid.length - 1][0].state = ON;
-  grid[grid.length - 1][grid[0].length - 1].state = ON;
-
-  for (let i = 0; i < steps; i++) {
-    runStep(grid, nextState2);
-  }
-
-  return grid.reduce((total, col) => {
-    return col.reduce((totalCol, cell) => totalCol + cell.state, total);
-  }, 0);
-}
-
-export let part2Examples = [
-  {
-    input: [
-      [
-        '##.#.#',
-        '...##.',
-        '#....#',
-        '..#...',
-        '#.#..#',
-        '####.#',
-      ].join('\n'),
-      5,
-    ],
-    value: 17,
-  },
-];
+module.exports = { part1, part2 }
