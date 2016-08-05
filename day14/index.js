@@ -1,19 +1,4 @@
-'use strict';
-
-const RACE_DURATION = 2503;
-
-const PARSE_LINE = /^(\w*) can fly (\d*) km\/s for (\d*) seconds, but then must rest for (\d*) seconds\.$/;
-
-function parseLine(line) {
-  let [ , name, speed, duration, rest ] = line.match(PARSE_LINE);
-
-  return {
-    name,
-    speed: parseInt(speed, 10),
-    duration: parseInt(duration, 10),
-    rest: parseInt(rest, 10),
-  };
-}
+'use strict'
 
 /**
  * --- Day 14: Reindeer Olympics ---
@@ -48,52 +33,9 @@ function parseLine(line) {
  * 2503 seconds, what distance has the winning reindeer traveled?
  */
 
-function race(raceDuration, { speed, duration, rest }) {
-  let i = 0;
-  let distance = 0;
-  let flyDistance = 0;
-  let restDistance = 0;
-  let isFlying = true;
-  let distances = [];
-
-  while (i++ < raceDuration) {
-    if (flyDistance >= duration) {
-      isFlying = false;
-      flyDistance = 0;
-    } else if (restDistance >= rest) {
-      isFlying = true;
-      restDistance = 0;
-    }
-
-    if (isFlying) {
-      distance += speed;
-      flyDistance++;
-    } else {
-      restDistance++;
-    }
-
-    distances.push(distance);
-  }
-
-  return distances;
-}
-
-export function part1(input) {
-
-  return input.split('\n').reduce((highest, line) => {
-    let distance = race(RACE_DURATION, parseLine(line)).pop();
-
-    if (highest === null || distance > highest) { return distance; }
-    return highest;
-  }, null);
+function part1(input) {
 
 }
-
-export let part1Examples = [
-
-];
-
-export let part1Answer = 2655;
 
 /**
  * --- Part Two ---
@@ -120,44 +62,6 @@ export let part1Answer = 2655;
  * exactly 2503 seconds, how many points does the winning reindeer have?
  */
 
-export function part2(input) {
-  let reindeer = input.split('\n').reduce((deer, line) => {
-    let singleDeer = parseLine(line);
+function part2(input) {
 
-    singleDeer.points = 0;
-
-    singleDeer.race = race(RACE_DURATION, singleDeer);
-
-    deer.push(singleDeer);
-    return deer;
-  }, []);
-
-  new Array(RACE_DURATION).fill(null).forEach((val, second) => {
-    if (second === 0) { return; } // Skip the zeroeth second
-
-    let highest = reindeer.reduce((lead, singleDeer, i) => {
-      let distance = singleDeer.race[second];
-
-      if (lead === null || distance > lead.distance) {
-        return { pos: [ i ], distance };
-      }
-      if (distance === lead.distance) { lead.pos.push(i); }
-      return lead;
-    }, null);
-
-    highest.pos.forEach((i) => {
-      reindeer[i].points++;
-    });
-  });
-
-  return reindeer.reduce((highest, { points }) => {
-    if (highest === null || points > highest) { return points; }
-    return highest;
-  }, null);
 }
-
-export let part2Examples = [
-
-];
-
-export let part2Answer = 1059;

@@ -1,30 +1,4 @@
-'use strict';
-
-const PARSE_LINE = /^(\w*) would (lose|gain) (\d*).* (\w*).$/;
-
-function parseLine(line) {
-  let [ , name1, action, points, name2 ] = line.match(PARSE_LINE);
-
-  points = parseInt(points, 10);
-
-  points = action === 'lose' ? -1 * points : points;
-
-  return { name1, points, name2 };
-}
-
-function getPermutation(array, start = 0, result = []) {
-  if (start >= array.length) {
-    result.push(array.slice(0));
-    return result;
-  }
-
-  for (let i = start; i < array.length; i++) {
-    [ array[i], array[start] ] = [ array[start], array[i] ];
-    result = getPermutation(array, start + 1, result);
-    [ array[i], array[start] ] = [ array[start], array[i] ];
-  }
-  return result;
-}
+'use strict'
 
 /**
  * --- Day 13: Knights of the Dinner Table ---
@@ -79,42 +53,9 @@ function getPermutation(array, start = 0, result = []) {
  * the actual guest list?
  */
 
-function getTotalChange(names, mapping) {
-  return names.reduce((total, name, i) => {
-    let prevPos = (i === 0 ? names.length : i) - 1;
-    let nextPos = (i === names.length - 1 ? -1 : i) + 1;
-    let prev = names[prevPos];
-    let next = names[nextPos];
+function part1(input) {
 
-    return total + mapping[name][prev] + mapping[name][next];
-  }, 0);
 }
-
-export function part1(input) {
-  let changeMapping = {};
-
-  input.split('\n').forEach((line) => {
-    let { name1, points, name2 } = parseLine(line);
-
-    changeMapping[name1] = changeMapping[name1] || {};
-    changeMapping[name1][name2] = points;
-  });
-
-  let possibilities = getPermutation(Object.keys(changeMapping));
-
-  return possibilities.reduce((highest, permutation) => {
-    let change = getTotalChange(permutation, changeMapping);
-
-    if (highest === null || change > highest) { return change; }
-    return highest;
-  }, null);
-}
-
-export let part1Examples = [
-
-];
-
-export let part1Answer = 618;
 
 /**
  * --- Part Two ---
@@ -130,33 +71,8 @@ export let part1Answer = 618;
  * What is the total change in happiness for the optimal seating arrangement
  * that actually includes yourself?
  */
-export function part2(input) {
-  let changeMapping = {
-    '_me': {},
-  };
+function part2(input) {
 
-  input.split('\n').forEach((line) => {
-    let { name1, points, name2 } = parseLine(line);
-
-    changeMapping[name1] = changeMapping[name1] || {
-      '_me': 0,
-    };
-    changeMapping[name1][name2] = points;
-    changeMapping._me[name1] = 0;
-  });
-
-  let possibilities = getPermutation(Object.keys(changeMapping));
-
-  return possibilities.reduce((highest, permutation) => {
-    let change = getTotalChange(permutation, changeMapping);
-
-    if (highest === null || change > highest) { return change; }
-    return highest;
-  }, null);
 }
 
-export let part2Examples = [
-
-];
-
-export let part2Answer = 601;
+module.exports = { part1, part2 }

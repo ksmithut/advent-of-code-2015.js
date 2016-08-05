@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 12: JSAbacusFramework.io ---
@@ -27,34 +27,9 @@
  * What is the sum of all numbers in the document?
  */
 
-function totalNumbers(obj) {
-  return Object.keys(obj).reduce((total, key) => {
-    let value = obj[key];
+function part1(input) {
 
-    if (typeof value === 'number') { return total + value; }
-    if (typeof value !== 'object' || !value) { return total; }
-    return total + totalNumbers(value);
-  }, 0);
 }
-
-export function part1(input) {
-  let obj = JSON.parse(input);
-
-  return totalNumbers(obj);
-}
-
-export let part1Examples = [
-  { input: '[1,2,3]', value: 6 },
-  { input: '{"a":2,"b":4}', value: 6 },
-  { input: '[[[3]]]', value: 3 },
-  { input: '{"a":{"b":4},"c":-1}', value: 3 },
-  { input: '{"a":[-1,1]}', value: 0 },
-  { input: '[-1,{"a":1}]', value: 0 },
-  { input: '[]', value: 0 },
-  { input: '{}', value: 0 },
-];
-
-export let part1Answer = 111754;
 
 /**
  * --- Part Two ---
@@ -76,35 +51,8 @@ export let part1Answer = 111754;
  * [1,"red",5] has a sum of 6, because "red" in an array has no effect.
  */
 
-function totalNumbersIgnore(obj, ignoreValue) {
-  let hasIgnoreValue = false;
-  let isObject = !Array.isArray(obj);
+function part2(input) {
 
-  return Object.keys(obj).reduce((total, key) => {
-    let value = obj[key];
-    let type = typeof value;
-
-    if ((isObject && value === ignoreValue) || hasIgnoreValue) {
-      hasIgnoreValue = true;
-      return 0;
-    }
-    if (type === 'number') { return total + value; }
-    if (type !== 'object' || !value) { return total; }
-    return total + totalNumbersIgnore(value, ignoreValue);
-  }, 0);
 }
 
-export function part2(input) {
-  let obj = JSON.parse(input);
-
-  return totalNumbersIgnore(obj, 'red');
-}
-
-export let part2Examples = [
-  { input: '[1,2,3]', value: 6 },
-  { input: '[1,{"c":"red","b":2},3]', value: 4 },
-  { input: '{"d":"red","e":[1,2,3,4],"f":5}', value: 0 },
-  { input: '[1,"red",5]', value: 6 },
-];
-
-export let part2Answer = 65402;
+module.exports = { part1, part2 }

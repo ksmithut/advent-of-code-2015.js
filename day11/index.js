@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 11: Corporate Policy ---
@@ -48,73 +48,9 @@
  * password be?
  */
 
-const PAIR_OF_LETTERS = /(\w)\1/g;
-const INVALID_LETTERS = /(i|o|l)/;
+function part1(input) {
 
-function charCode(char) {
-  return char.charCodeAt(0);
 }
-
-function hasStraight(str, length) {
-  let straightLength = 1;
-
-  for (let i = 1, len = str.length; i < len; i++) {
-    if (charCode(str[i]) === charCode(str[i - 1]) + 1) {
-      straightLength++;
-    } else {
-      straightLength = 1;
-    }
-    if (straightLength >= length) { return true; }
-  }
-
-  return false;
-}
-
-function hasTwoDifferentPairs(str) {
-  let combos = str.match(PAIR_OF_LETTERS) || [];
-
-  let uniqueCombos = combos.filter((combo, i, arr) => arr.indexOf(combo) === i);
-
-  return uniqueCombos.length >= 2;
-}
-
-function incrementChar(char) {
-  return String.fromCharCode(charCode(char) + 1);
-}
-
-function replaceAt(str, index, char) {
-  return str.substr(0, index) + char + str.substr(index + char.length);
-}
-
-function incrementStr(str) {
-  for (let i = str.length - 1; i >= 0; i--) {
-    if (str[i] !== 'z') {
-      str = replaceAt(str, i, incrementChar(str[i]));
-      break;
-    }
-    str = replaceAt(str, i, 'a');
-  }
-  return str;
-}
-
-export function part1(input) {
-  let invalidPassword = true;
-  let nextPassword = input;
-
-  while (invalidPassword && nextPassword.length === 8) {
-    nextPassword = incrementStr(nextPassword);
-
-    if (INVALID_LETTERS.test(nextPassword)) { continue; }
-    if (!hasTwoDifferentPairs(nextPassword)) { continue; }
-    if (!hasStraight(nextPassword, 3)) { continue; }
-
-    invalidPassword = false;
-  }
-
-  return nextPassword;
-}
-
-export let part1Answer = 'hxbxxyzz';
 
 /**
  * --- Part Two ---
@@ -122,8 +58,8 @@ export let part1Answer = 'hxbxxyzz';
  * Santa's password expired again. What's the next one?
  */
 
-export function part2(input) {
-  return part1(part1(input));
+function part2(input) {
+
 }
 
-export let part2Answer = 'hxcaabcc';
+module.exports = { part1, part2 }

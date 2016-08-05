@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 16: Aunt Sue ---
@@ -49,48 +49,9 @@
  * What is the number of the Sue that got you the gift?
  */
 
-const PARSE_LINE = /^Sue (\d*): (.*)$/;
+function part1(input) {
 
-function parseLine(line) {
-  let [ , num, props ] = line.match(PARSE_LINE);
-
-  props = props.split(', ').reduce((hash, prop) => {
-    let [ name, value ] = prop.split(': ');
-
-    hash[name] = parseInt(value, 10);
-    return hash;
-  }, {});
-
-  return { num, props };
 }
-
-const AUNT_SUE = {
-  children: 3,
-  cats: 7,
-  samoyeds: 2,
-  pomeranians: 3,
-  akitas: 0,
-  vizslas: 0,
-  goldfish: 5,
-  trees: 3,
-  cars: 2,
-  perfumes: 1,
-};
-
-export function part1(input) {
-
-  let sue = input.split('\n')
-    .map(parseLine)
-    .find(({ props }) => {
-      return Object.keys(props).every((key) => {
-        return AUNT_SUE[key] === props[key];
-      });
-    });
-
-  return sue.num;
-}
-
-export let part1Answer = '373';
 
 /**
  * --- Part Two ---
@@ -108,26 +69,8 @@ export let part1Answer = '373';
  * What is the number of the real Aunt Sue?
  */
 
-const GT_KEYS = [ 'cats', 'trees' ];
-const LT_KEYS = [ 'pomeranians', 'goldfish' ];
-
-export function part2(input) {
-
-  let sue = input.split('\n')
-    .map(parseLine)
-    .find(({ props }) => {
-      return Object.keys(props).every((key) => {
-        if (GT_KEYS.indexOf(key) !== -1) {
-          return props[key] > AUNT_SUE[key];
-        } else if (LT_KEYS.indexOf(key) !== -1) {
-          return props[key] < AUNT_SUE[key];
-        }
-        return AUNT_SUE[key] === props[key];
-      });
-    });
-
-  return sue.num;
+function part2(input) {
 
 }
 
-export let part2Answer = '260';
+module.exports = { part1, part2 }

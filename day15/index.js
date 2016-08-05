@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 15: Science for Hungry People ---
@@ -43,83 +43,9 @@
  * to zero.
  */
 
-const PARSE_LINE = /^(\w*): (.*)/;
+function part1(input) {
 
-function parseLine(line) {
-  let [ , ingredient, stats ] = line.match(PARSE_LINE);
-
-  stats = stats.split(', ').reduce((hash, stat) => {
-    let [ name, value ] = stat.split(' ');
-
-    hash[name] = parseInt(value, 10);
-    return hash;
-  }, {});
-
-  return { ingredient, stats };
 }
-
-function getPermutations(total, length) {
-  if (length <= 1) { return [ [ total ] ]; }
-
-  let permutations = [];
-
-  for (let i = 0; i < total; i++) {
-    getPermutations(total - i, length - 1).forEach((subPermutation) => {
-      permutations.push([ i, ...subPermutation ]);
-    });
-  }
-
-  return permutations;
-}
-
-export function part1(input) {
-  const MAX_INGREDIENTS = 100;
-
-  let ingredients = input.split('\n').map(parseLine);
-
-  let permutations = getPermutations(MAX_INGREDIENTS, ingredients.length);
-
-  return permutations.reduce((highest, permutation) => {
-    let qualities = {
-      capacity: 0,
-      durability: 0,
-      flavor: 0,
-      texture: 0,
-      calories: 0,
-    };
-
-    ingredients.forEach(({ stats }, i) => {
-      Object.keys(stats).forEach((quality) => {
-        qualities[quality] += stats[quality] * permutation[i];
-      });
-    });
-
-    let value = Object.keys(qualities).reduce((total, quality) => {
-      // Ignore Calories
-      if (quality === 'calories') { return total; }
-
-      let qualityValue = qualities[quality] < 0 ? 0 : qualities[quality];
-
-      return total * qualityValue;
-    }, 1);
-
-    if (highest === null || value > highest) { return value; }
-
-    return highest;
-  }, null);
-}
-
-export let part1Examples = [
-  {
-    input: [
-      'Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8',
-      'Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3',
-    ].join('\n'),
-    value: 62842880,
-  },
-];
-
-export let part1Answer = 13882464;
 
 /**
  * --- Part Two ---
@@ -139,44 +65,8 @@ export let part1Answer = 13882464;
  * score of the highest-scoring cookie you can make with a calorie total of 500?
  */
 
-export function part2(input) {
-  const MAX_INGREDIENTS = 100;
-  const CALORIES = 500;
+function part2(input) {
 
-  let ingredients = input.split('\n').map(parseLine);
-
-  let permutations = getPermutations(MAX_INGREDIENTS, ingredients.length);
-
-  return permutations.reduce((highest, permutation) => {
-    let qualities = {
-      capacity: 0,
-      durability: 0,
-      flavor: 0,
-      texture: 0,
-      calories: 0,
-    };
-
-    ingredients.forEach(({ stats }, i) => {
-      Object.keys(stats).forEach((quality) => {
-        qualities[quality] += stats[quality] * permutation[i];
-      });
-    });
-
-    if (qualities.calories !== CALORIES) { return highest; }
-
-    let value = Object.keys(qualities).reduce((total, quality) => {
-      // Ignore Calories
-      if (quality === 'calories') { return total; }
-
-      let qualityValue = qualities[quality] < 0 ? 0 : qualities[quality];
-
-      return total * qualityValue;
-    }, 1);
-
-    if (highest === null || value > highest) { return value; }
-
-    return highest;
-  }, null);
 }
 
-export let part2Answer = 11171160;
+module.exports = { part1, part2 }

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * --- Day 17: No Such Thing as Too Much ---
@@ -19,41 +19,9 @@
  * containers can exactly fit all 150 liters of eggnog?
  */
 
-function getPermutations(total, possibilities) {
-
-  let permutations = [];
-  let subPossibilities = possibilities.slice(0);
-
-  possibilities.forEach((container) => {
-    subPossibilities.splice(0, 1);
-
-    if (container === total) { permutations.push([ container ]); }
-
-    getPermutations(total - container, subPossibilities).forEach((subPermutation) => {
-      permutations.push([ container, ...subPermutation ]);
-    });
-  });
-
-  return permutations;
+function part1(input, totalLiters) {
+  totalLiters = totalLiters || 150
 }
-
-export function part1(input, totalLiters = 150) {
-  let possibilities = input.split('\n').map((num) => parseInt(num, 10));
-
-  return getPermutations(totalLiters, possibilities).length;
-}
-
-export let part1Examples = [
-  {
-    input: [
-      [ '20', '15', '10', '5', '5' ].join('\n'),
-      25,
-    ],
-    value: 4,
-  },
-];
-
-export let part1Answer = 1304;
 
 /**
  * --- Part Two ---
@@ -70,25 +38,8 @@ export let part1Answer = 1304;
  * three ways to use that many containers, and so the answer there would be 3.
  */
 
-export function part2(input, totalLiters = 150) {
-  let possibilities = input.split('\n').map((num) => parseInt(num, 10));
-  let permutations = getPermutations(totalLiters, possibilities);
-
-  return permutations.reduce(({ num, length }, permutation) => {
-    if (length === null || permutation.length < length) {
-      num = 1;
-      length = permutation.length;
-    } else if (permutation.length === length) { num++; }
-
-    return { num, length };
-  }, { num: 0, length: null }).num;
+function part2(input, totalLiters) {
+  totalLiters = totalLiters || 150
 }
 
-export let part2Examples = [
-  {
-    input: part1Examples[0].input,
-    value: 3,
-  },
-];
-
-export let part2Answer = 18;
+module.exports = { part1, part2 }
