@@ -44,8 +44,21 @@
  * memory for string values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
  */
 
-function part1(input) {
+const unescape = (line) => {
+  return line
+    .replace(/^"(.*)"$/, '$1')
+    .replace(/\\x([0-9a-gA-G]{2})/g, (match, code) => {
+      return String.fromCharCode(parseInt(code, 16))
+    })
+    .replace(/\\(.)/g, '$1')
+}
 
+function part1(input) {
+  return input.split('\n').reduce((diff, line) => {
+    const fullLength = line.length
+    const codeLength = unescape(line).length
+    return diff + fullLength - codeLength
+  }, 0)
 }
 
 /**
@@ -74,8 +87,19 @@ function part1(input) {
  * 19.
  */
 
-function part2(input) {
+const escape = (line) => {
+  line = line
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+  return `"${line}"`
+}
 
+function part2(input) {
+  return input.split('\n').reduce((diff, line) => {
+    const fullLength = line.length
+    const fullerLength = escape(line).length
+    return diff + fullerLength - fullLength
+  }, 0)
 }
 
 module.exports = { part1, part2 }
