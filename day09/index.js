@@ -30,8 +30,57 @@
  * What is the distance of the shortest route?
  */
 
-function part1(input) {
+const LINE_PATTERN = /(\w*) to (\w*) = (\d*)/
+const parseLine = (line) => {
+  const [, city1, city2, distance] = line.match(LINE_PATTERN)
+  return {
+    city1,
+    city2,
+    distance: parseInt(distance)
+  }
+}
 
+const removeIndex = (arr, i) => {
+  arr = arr.slice()
+  arr.splice(i, 1)
+  return arr
+}
+
+const getOrderedPermutations = (arr) => {
+  if (arr.length <= 1) return arr
+  return arr.reduce((permutations, item, i) => {
+    const subPermutations = getOrderedPermutations(removeIndex(arr, i))
+      .map((permutation) => [item].concat(permutation))
+    return permutations.concat(subPermutations)
+  }, [])
+}
+
+const getDistances = (input) => {
+  const cities = new Set()
+  const distances = input.split('\n').reduce((hash, line) => {
+    const { city1, city2, distance } = parseLine(line)
+    cities.add(city1).add(city2)
+    hash[`${city1}:${city2}`] = distance
+    hash[`${city2}:${city1}`] = distance
+    return hash
+  }, {})
+  const permutations = getOrderedPermutations(Array.from(cities))
+  return permutations.map((permutation) => {
+    let distance = 0
+    for (let i = 1; i < permutation.length; i++) {
+      distance += distances[`${permutation[i - 1]}:${permutation[i]}`]
+    }
+    return {
+      order: permutation,
+      distance
+    }
+  })
+}
+
+function part1(input) {
+  return getDistances(input).reduce((min, { distance }) => {
+    return distance < min ? distance : min
+  }, Infinity)
 }
 
 /**
@@ -50,7 +99,9 @@ function part1(input) {
  */
 
 function part2(input) {
-
+  return getDistances(input).reduce((max, { distance }) => {
+    return distance > max ? distance : max
+  }, 0)
 }
 
 module.exports = { part1, part2 }
