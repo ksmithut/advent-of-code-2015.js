@@ -16,6 +16,7 @@ const NOT_CHECKED = chalk.cyan('-')
 
 program
   .usage('[options] <days...>')
+  .option('-e, --examples', 'run the examples')
   .parse(process.argv)
 
 program.args = program.args
@@ -31,7 +32,7 @@ function runDay(rawDay) {
     .resolve(`day${padLeft(rawDay, 2, '0')}`)
     .then((day) => Promise.props({
       name: chalk.white(day),
-      input: fs.readFileAsync(relative(day, 'input.txt'), 'utf8'),
+      input: fs.readFileAsync(relative(day, 'input.txt'), 'utf8').trim(),
       module: require(`./${day}`),
       answers: require(`./${day}/answers`)
     }))
@@ -58,19 +59,21 @@ function runPart(part, mainInput, answers) {
   const examples = answers.examples || []
   if (typeof method !== 'function') return console.log('Not Implemented')
 
-  examples.forEach((example) => {
-    let input = example.input
-    const value = example.value
-    input = Array.isArray(input) ? input : [ input ]
+  if (program.examples) {
+    examples.forEach((example) => {
+      let input = example.input
+      const value = example.value
+      input = Array.isArray(input) ? input : [ input ]
 
-    const output = method.apply(null, input)
+      const output = method.apply(null, input)
 
-    if (output === value) {
-      console.log(` ${RIGHT} ${input} = ${value}`)
-    } else {
-      console.log(` ${WRONG} expected ${value}, given ${output}`)
-    }
-  })
+      if (output === value) {
+        console.log(` ${RIGHT} ${input} = ${value}`)
+      } else {
+        console.log(` ${WRONG} expected ${value}, given ${output}`)
+      }
+    })
+  }
 
   const output = method(mainInput)
   let consoleOutput = `\nanswer: ${output} `
