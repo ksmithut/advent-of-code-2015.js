@@ -29,29 +29,8 @@
  * What is the length of the result?
  */
 
-const describeNumber = (num) => {
-  const digits = String(num).split('').concat(Symbol('last'))
-  return digits.reduce(({ prevChar, prevCount, str }, digit) => {
-    if (digit === prevChar) {
-      prevCount++
-    } else {
-      if (prevChar) str = str.concat(prevCount, prevChar)
-      prevCount = 1
-      prevChar = digit
-    }
-    return { prevChar, prevCount, str }
-  }, { prevChar: '', prevCount: 0, str: '' }).str
-}
-
-const describeIterate = (input, iterations) => {
-  return new Array(iterations)
-    .fill(null)
-    .reduce(describeNumber, input)
-    .length
-}
-
 function part1(input, iterations = 40) {
-  return describeIterate(input, iterations)
+
 }
 
 /**
@@ -65,7 +44,7 @@ function part1(input, iterations = 40) {
  */
 
 function part2(input, iterations = 50) {
-  return describeIterate(input, iterations)
+
 }
 
 module.exports = { part1, part2 }

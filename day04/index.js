@@ -1,7 +1,5 @@
 'use strict'
 
-const crypto = require('crypto')
-
 /**
  * --- Day 4: The Ideal Stocking Stuffer ---
  *
@@ -25,21 +23,8 @@ const crypto = require('crypto')
  * pqrstuv1048970 looks like 000006136ef....
  */
 
-function hash(data) {
-  return crypto
-    .createHash('md5')
-    .update(data)
-    .digest('hex')
-}
-
-function hashStartsWith(input, check) {
-  let num = 0
-  while (hash(input.concat(num)).substr(0, check.length) !== check) num++
-  return num
-}
-
 function part1(input) {
-  return hashStartsWith(input, '00000')
+
 }
 
 /**
@@ -49,7 +34,7 @@ function part1(input) {
  */
 
 function part2(input) {
-  return hashStartsWith(input, '000000')
+
 }
 
 module.exports = { part1, part2 }

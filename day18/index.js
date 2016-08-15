@@ -86,8 +86,8 @@
  * lights are on after 100 steps?
  */
 
-function part1(input, steps) {
-  steps = steps || 100
+function part1(input, steps = 100) {
+
 }
 
 /**
@@ -154,7 +154,7 @@ function part1(input, steps) {
  */
 
 function part2(input, steps = 100) {
-  steps = steps || 100
+
 }
 
 module.exports = { part1, part2 }

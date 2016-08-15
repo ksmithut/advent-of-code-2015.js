@@ -35,17 +35,8 @@
  * To what floor do the instructions take Santa?
  */
 
-const UP = '('
-const DOWN = ')'
-const ACTIONS = {
-  [UP]: (val) => val + 1,
-  [DOWN]: (val) => val - 1
-}
-
 function part1(input) {
-  return input
-    .split('')
-    .reduce((floor, char) => ACTIONS[char](floor), 0)
+
 }
 
 /**
@@ -65,14 +56,7 @@ function part1(input) {
  */
 
 function part2(input) {
-  let floor = 0
-  const basementIndex = input
-    .split('')
-    .findIndex((char) => {
-      floor = ACTIONS[char](floor)
-      return floor < 0
-    })
-  return basementIndex + 1
+
 }
 
 module.exports = { part1, part2 }

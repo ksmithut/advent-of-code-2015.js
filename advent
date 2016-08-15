@@ -15,28 +15,33 @@ const WRONG = chalk.red('✗')
 const NOT_CHECKED = chalk.cyan('-')
 
 program
+  .usage('[options] <days...>')
   .parse(process.argv)
 
-if (program.args[0] === '*') {
+program.args = program.args
+  .map((file) => file.replace(/[^\d]/g, ''))
+  .filter(Boolean)
 
-} else {
-  Promise.resolve(program.args)
-    .mapSeries(runDay)
-}
+Promise.resolve(program.args)
+  .mapSeries(runDay)
+
 
 function runDay(rawDay) {
   return Promise
     .resolve(`day${padLeft(rawDay, 2, '0')}`)
     .then((day) => Promise.props({
+      name: chalk.white(day),
       input: fs.readFileAsync(relative(day, 'input.txt'), 'utf8'),
       module: require(`./${day}`),
       answers: require(`./${day}/answers`)
     }))
     .then((day) => {
       console.log()
-      console.log('Part 1:\n-------')
+      console.log(chalk.gray(`===========\n== ${day.name} ==\n===========`))
+      console.log()
+      console.log(chalk.underline.yellow('Part 1:'))
       runPart(day.module.part1, day.input, day.answers.part1)
-      console.log('Part 2:\n-------')
+      console.log(chalk.underline.yellow('Part 2:'))
       runPart(day.module.part2, day.input, day.answers.part2)
     })
 }

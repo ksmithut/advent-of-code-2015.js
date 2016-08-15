@@ -19,8 +19,8 @@
  * containers can exactly fit all 150 liters of eggnog?
  */
 
-function part1(input, totalLiters) {
-  totalLiters = totalLiters || 150
+function part1(input, totalLiters = 150) {
+
 }
 
 /**
@@ -38,8 +38,8 @@ function part1(input, totalLiters) {
  * three ways to use that many containers, and so the answer there would be 3.
  */
 
-function part2(input, totalLiters) {
-  totalLiters = totalLiters || 150
+function part2(input, totalLiters = 150) {
+
 }
 
 module.exports = { part1, part2 }

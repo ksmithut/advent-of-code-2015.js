@@ -147,19 +147,16 @@
  * negative mana.)
  */
 
-// function memoize(fn) {
-//   let cache = {};
-//
-//   return function(...args) {
-//     let key = JSON.stringify(args);
-//
-//     cache[key] = cache[key] || { value: fn(...args) };
-//
-//     return cache[key].value;
-//   };
-// }
-
-
 function part1(input, player = { health: 50, mana: 100 }) {
 
 }
+
+/**
+ *
+ */
+
+function part2(input, player) {
+
+}
+
+module.exports = { part1, part2 }

@@ -17,7 +17,7 @@ exports.part2 = {
   answer: 18,
   examples: [
     {
-      input: part1Examples[0].input,
+      input: exports.part1.examples[0].input,
       value: 3,
     },
   ]

@@ -3,25 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "node advent",
-    "test": "npm start",
-    "lint": "eslint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "gh:ksmithut/advent-of-code"
+    "test:lint": "eslint ."
   },
   "engines": {
-    "node": ">=5.0.0"
+    "node": ">=6.0.0"
   },
   "author": "",
   "license": "ISC",
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  },
   "dependencies": {
     "bluebird": "^3.4.1",
     "chalk": "^1.1.3",

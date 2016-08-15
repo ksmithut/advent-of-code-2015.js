@@ -61,54 +61,8 @@
  * what signal is ultimately provided to wire a?
  */
 
-const LINE_PATTERN = /(([a-z0-9]+) )?(AND|OR|LSHIFT|RSHIFT|NOT)? ?(\w+) -> (\w+)$/
-const parseLine = (line) => {
-  const [,, left, command = 'ASSIGN', right, wire ] = line.match(LINE_PATTERN)
-  return {
-    left,
-    command,
-    right,
-    wire
-  }
-}
-
-const COMMANDS = {
-  ASSIGN: (a, b) => b,
-  AND: (a, b) => a & b,
-  OR: (a, b) => a | b,
-  LSHIFT: (a, b) => a << b,
-  RSHIFT: (a, b) => a >> b,
-  NOT: (a, b) => ~ b
-}
-
-const once = (fn) => {
-  let called = false
-  let value
-  return (...args) => {
-    if (!called) {
-      called = true
-      value = fn(...args)
-    }
-    return value
-  }
-}
-
-const normalize = (value, wires) => {
-  if (!value) return () => null
-  return Number.isNaN(Number(value))
-    ? () => wires[value]()
-    : () => parseInt(value)
-}
-
 function part1(input, startingLetter = 'a') {
-  const wires = {}
-  input.split('\n').forEach((line) => {
-    const { left, command, right, wire } = parseLine(line)
-    const leftFunc = normalize(left, wires)
-    const rightFunc = normalize(right, wires)
-    wires[wire] = once(() => COMMANDS[command](leftFunc(), rightFunc()))
-  })
-  return wires[startingLetter]()
+
 }
 
 /**
@@ -120,16 +74,7 @@ function part1(input, startingLetter = 'a') {
  */
 
 function part2(input, startingLetter = 'a') {
-  const wires = {}
-  input.split('\n').forEach((line) => {
-    const { left, command, right, wire } = parseLine(line)
-    const leftFunc = normalize(left, wires)
-    const rightFunc = wire === 'b'
-      ? () => part1(input)
-      : normalize(right, wires)
-    wires[wire] = once(() => COMMANDS[command](leftFunc(), rightFunc()))
-  })
-  return wires[startingLetter]()
+
 }
 
 module.exports = { part1, part2 }

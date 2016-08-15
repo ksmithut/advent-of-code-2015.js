@@ -48,58 +48,8 @@
  * password be?
  */
 
-const incrementChar = (char) => {
-  return String.fromCharCode(char.charCodeAt(0) + 1);
-}
-
-const incrementStr = (str) => {
-  let done = false
-  str = str
-    .split('')
-    .reverse()
-    .map((char) => {
-      if (done) return char
-      if (char >= 'z') return 'a'
-      done = true
-      return incrementChar(char)
-    })
-    .reverse()
-    .join('')
-  if (!done) str = `${str}a`
-  return str
-}
-
-const hasStraight = (str, length) => {
-  let straightLength = 1
-  for (let i = 1, len = str.length; i < len; i++) {
-    const isNextLetter = str.charCodeAt(i) === str.charCodeAt(i - 1) + 1
-    if (!isNextLetter) straightLength = 0
-    straightLength++
-    if (straightLength >= length) return true
-  }
-  return false
-}
-
-function hasDifferentMatches(str, match, min) {
-  const combos = str.match(new RegExp(match, 'g')) || []
-  const uniqueCombos = combos.filter((val, i, arr) => arr.indexOf(val) === i)
-  return uniqueCombos.length >= min
-}
-
-const hasNoInvalidLetters = (str, letters) => {
-  return !(new RegExp(`[${letters}]`).test(str))
-}
-
 function part1(input) {
-  let pass = input
-  let valid = false
-  while (!valid) {
-    pass = incrementStr(pass)
-    valid = hasNoInvalidLetters(pass, 'iol')
-      && hasDifferentMatches(pass, /(.)\1/, 2)
-      && hasStraight(pass, 3)
-  }
-  return pass
+
 }
 
 /**
@@ -109,7 +59,7 @@ function part1(input) {
  */
 
 function part2(input) {
-  return part1(part1(input))
+
 }
 
 module.exports = { part1, part2 }

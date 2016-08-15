@@ -33,54 +33,8 @@
  * After following the instructions, how many lights are lit?
  */
 
-const ACTIONS = {
-  TOGGLE: 'toggle',
-  TURN_OFF: 'turn off',
-  TURN_ON: 'turn on'
-}
-
-const PARSE_REGEX = /(toggle|turn off|turn on) (\d*),(\d*) through (\d*),(\d*)/
-const parseLine = (line) => {
-  const [, action, x1, y1, x2, y2] = line.match(PARSE_REGEX)
-  return {
-    action,
-    x1: parseInt(x1, 10),
-    y1: parseInt(y1, 10),
-    x2: parseInt(x2, 10),
-    y2: parseInt(y2, 10)
-  }
-}
-
-const createGrid = (width, height, init = 0) => {
-  return new Array(width)
-    .fill(null)
-    .map(() => new Array(height).fill(init))
-}
-
-const getBrightness = (width, height, input, actions) => {
-  return input
-    .split('\n')
-    .reduce((grid, line) => {
-      const { action, x1, y1, x2, y2 } = parseLine(line)
-      for (let x = x1; x <= x2; x++) {
-        for (let y = y1; y <= y2; y++) {
-          grid[x][y] = actions[action](grid[x][y])
-        }
-      }
-      return grid
-    }, createGrid(1000, 1000))
-    .reduce((total, col) => {
-      const colTotal = col.reduce((subTotal, cell) => subTotal + cell)
-      return total + colTotal
-    }, 0)
-}
-
 function part1(input) {
-  return getBrightness(1000, 1000, input, {
-    [ACTIONS.TOGGLE]: (val) => val ? 0 : 1, // eslint-disable-line no-confusing-arrow
-    [ACTIONS.TURN_OFF]: (val) => 0,
-    [ACTIONS.TURN_ON]: (val) => 1
-  })
+
 }
 
 /**
@@ -112,11 +66,7 @@ function part1(input) {
  */
 
 function part2(input) {
-  return getBrightness(1000, 1000, input, {
-    [ACTIONS.TOGGLE]: (val) => val + 2,
-    [ACTIONS.TURN_OFF]: (val) => val <= 0 ? 0 : val - 1,
-    [ACTIONS.TURN_ON]: (val) => val + 1
-  })
+
 }
 
 module.exports = { part1, part2 }

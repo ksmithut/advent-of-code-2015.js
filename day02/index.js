@@ -24,29 +24,8 @@
  * wrapping paper should they order?
  */
 
-const parseLine = (line) => {
-  const [, length, width, height] = line.match(/(\d*)x(\d*)x(\d*)/)
-  return {
-    length: parseInt(length, 10),
-    width: parseInt(width, 10),
-    height: parseInt(height, 10)
-  }
-}
-const sortNumbers = (a, b) => a - b
-const sum = (arr) => arr.reduce((total, num) => total + num)
-const min = (arr) => Math.min.apply(Math, arr)
-const surfaceArea = (sides) => 2 * sum(sides)
-
 function part1(input) {
-  return input.split('\n').reduce((total, line) => {
-    const { length, width, height } = parseLine(line)
-    const sides = [
-      length * width,
-      width * height,
-      height * length
-    ]
-    return total + surfaceArea(sides) + min(sides)
-  }, 0)
+
 }
 
 /**
@@ -75,23 +54,8 @@ function part1(input) {
  * How many total feet of ribbon should they order?
  */
 
-const cubicArea = (sides) => sides.reduce((total, side) => total * side)
-
 function part2(input) {
-  return input.split('\n').reduce((total, line) => {
-    const { length, width, height } = parseLine(line)
-    const dimensions = [
-      length,
-      width,
-      height
-    ]
-    const perimeters = [
-      2 * (length + width),
-      2 * (width + height),
-      2 * (height + length)
-    ]
-    return total + cubicArea(dimensions) + min(perimeters)
-  }, 0)
+
 }
 
 module.exports = { part1, part2 }
