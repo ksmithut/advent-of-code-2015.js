@@ -20,6 +20,6 @@
   },
   "devDependencies": {
     "eslint": "^3.2.2",
-    "eslint-config-ksmithut": "^2.1.3"
+    "eslint-config-ksmithut": "^2.2.2"
   }
 }
