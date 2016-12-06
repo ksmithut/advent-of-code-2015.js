@@ -8,9 +8,10 @@ exports.part1 = {
     { input: [ '21', 1 ], value: 4 },
     { input: [ '1211', 1 ], value: 6 },
     { input: [ '111221', 1 ], value: 6 },
-  ]
+  ],
 }
 
 exports.part2 = {
-  answer: 3579328
+  answer: 3579328,
+  examples: [],
 }

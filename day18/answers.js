@@ -17,7 +17,7 @@ exports.part1 = {
       ],
       value: 4,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -37,5 +37,5 @@ exports.part2 = {
       ],
       value: 17,
     },
-  ]
+  ],
 }

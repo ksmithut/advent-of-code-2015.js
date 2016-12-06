@@ -27,34 +27,8 @@
  * houses.
  */
 
-const UP = '^'
-const RIGHT = '>'
-const DOWN = 'v'
-const LEFT = '<'
-const ACTIONS = {
-  [UP]: ([ x, y ]) => [ x, y - 1 ],
-  [RIGHT]: ([ x, y ]) => [ x + 1, y ],
-  [DOWN]: ([ x, y ]) => [ x, y + 1 ],
-  [LEFT]: ([ x, y ]) => [ x - 1, y ]
-}
-
-const houseSet = () => {
-  const visited = new Set()
-  return {
-    visit: ([ x, y ]) => visited.add(`${x}:${y}`),
-    visited: () => visited.size
-  }
-}
-
 function part1(input) {
-  const houses = houseSet()
-  let pos = [ 0, 0 ]
-  houses.visit(pos)
-  input.split('').forEach((action) => {
-    pos = ACTIONS[action](pos)
-    houses.visit(pos)
-  })
-  return houses.visited()
+
 }
 
 /**
@@ -82,28 +56,9 @@ function part1(input) {
  * and Robo-Santa going the other.
  */
 
-const rotator = (length) => {
-  let currentIndex = 0
-  return () => {
-    if (currentIndex >= length) currentIndex = 0
-    return currentIndex++
-  }
-}
-
 function part2(input) {
-  const houses = houseSet()
-  const visitors = [
-    [ 0, 0 ],
-    [ 0, 0 ]
-  ]
-  const nextVisitor = rotator(visitors.length)
-  visitors.forEach(houses.visit)
-  input.split('').forEach((action) => {
-    const nextIndex = nextVisitor()
-    visitors[nextIndex] = ACTIONS[action](visitors[nextIndex])
-    houses.visit(visitors[nextIndex])
-  })
-  return houses.visited()
+
 }
 
-module.exports = { part1, part2 }
+// exports.part1 = part1
+// exports.part2 = part2

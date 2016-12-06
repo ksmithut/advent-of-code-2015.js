@@ -30,18 +30,8 @@ const hashStr = (data) => crypto
   .update(data)
   .digest('hex')
 
-function* hashGenerator(key, start = 0) {
-  let i = start
-  while (true) {
-    yield { i, hash: hashStr(`${key}${i}`).toString() }
-    i++
-  }
-}
-
 function part1(input) {
-  for (const { i, hash } of hashGenerator(input)) {
-    if (hash.startsWith('00000')) return i
-  }
+
 }
 
 /**
@@ -51,9 +41,8 @@ function part1(input) {
  */
 
 function part2(input) {
-  for (const { i, hash } of hashGenerator(input)) {
-    if (hash.startsWith('000000')) return i
-  }
+
 }
 
-module.exports = { part1, part2 }
+// exports.part1 = part1
+// exports.part2 = part2

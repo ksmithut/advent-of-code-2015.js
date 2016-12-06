@@ -11,7 +11,7 @@ exports.part1 = {
     { input: '[-1,{"a":1}]', value: 0 },
     { input: '[]', value: 0 },
     { input: '{}', value: 0 },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -21,5 +21,5 @@ exports.part2 = {
     { input: '[1,{"c":"red","b":2},3]', value: 4 },
     { input: '{"d":"red","e":[1,2,3,4],"f":5}', value: 0 },
     { input: '[1,"red",5]', value: 6 },
-  ]
+  ],
 }

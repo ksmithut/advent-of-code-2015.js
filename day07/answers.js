@@ -19,9 +19,10 @@ exports.part1 = {
       ],
       value: 114,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
-  answer: 40149
+  answer: 40149,
+  examples: [],
 }

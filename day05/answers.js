@@ -8,7 +8,7 @@ exports.part1 = {
     { input: 'jchzalrnumimnmhp', value: 0 },
     { input: 'haegwjzuvuyypxyu', value: 0 },
     { input: 'dvszwmarrgswjxmb', value: 0 },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -18,5 +18,5 @@ exports.part2 = {
     { input: 'xxyxx', value: 1 },
     { input: 'uurcxstgmygtbstg', value: 0 },
     { input: 'ieodomkazucvgmuy', value: 0 },
-  ]
+  ],
 }

@@ -13,9 +13,10 @@ exports.part1 = {
       ].join('\n'),
       value: 4,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
-  answer: 212
+  answer: 212,
+  examples: [],
 }

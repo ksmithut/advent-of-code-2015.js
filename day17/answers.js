@@ -10,7 +10,7 @@ exports.part1 = {
       ],
       value: 4,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -20,5 +20,5 @@ exports.part2 = {
       input: exports.part1.examples[0].input,
       value: 3,
     },
-  ]
+  ],
 }

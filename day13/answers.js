@@ -16,13 +16,14 @@ exports.part1 = {
         'Carol would gain 55 happiness units by sitting next to David.',
         'David would gain 46 happiness units by sitting next to Alice.',
         'David would lose 7 happiness units by sitting next to Bob.',
-        'David would gain 41 happiness units by sitting next to Carol.'
+        'David would gain 41 happiness units by sitting next to Carol.',
       ].join('\n'),
-      value: 300
-    }
-  ]
+      value: 300,
+    },
+  ],
 }
 
 exports.part2 = {
-  answer: 601
+  answer: 601,
+  examples: [],
 }

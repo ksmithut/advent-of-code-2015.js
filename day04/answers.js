@@ -5,9 +5,10 @@ exports.part1 = {
   examples: [
     { input: 'abcdef', value: 609043 },
     { input: 'pqrstuv', value: 1048970 },
-  ]
+  ],
 }
 
 exports.part2 = {
-  answer: 9962624
+  answer: 9962624,
+  examples: [],
 }

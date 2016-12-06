@@ -7,7 +7,7 @@ exports.part1 = {
     { input: '"abc"', value: 2 },
     { input: '"aaa\\"aaa"', value: 3 },
     { input: '"\\x27"', value: 5 },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -17,5 +17,5 @@ exports.part2 = {
     { input: '"abc"', value: 4 },
     { input: '"aaa\\"aaa"', value: 6 },
     { input: '"\\x27"', value: 5 },
-  ]
+  ],
 }

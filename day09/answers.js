@@ -11,7 +11,7 @@ exports.part1 = {
       ].join('\n'),
       value: 605,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -25,5 +25,5 @@ exports.part2 = {
       ].join('\n'),
       value: 982,
     },
-  ]
+  ],
 }

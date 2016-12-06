@@ -5,7 +5,7 @@ exports.part1 = {
   examples: [
     { input: '2x3x4', value: 58 },
     { input: '1x1x10', value: 43 },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -13,5 +13,5 @@ exports.part2 = {
   examples: [
     { input: '2x3x4', value: 34 },
     { input: '1x1x10', value: 14 },
-  ]
+  ],
 }

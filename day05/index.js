@@ -34,24 +34,8 @@
  * How many strings are nice?
  */
 
-const niceChecker = (conditions) => {
-  return (input) => conditions.every((condition) => condition(input))
-}
-
-const totalValid = (values, method) => {
-  return values.reduce((total, value) => {
-    if (method(value)) return total + 1
-    return total
-  }, 0)
-}
-
 function part1(input) {
-  const isNice = niceChecker([
-    (input) => (input.match(/[aeiou]/g) || []).length >= 3,
-    (input) => (/(\w)\1/).test(input),
-    (input) => !(/(ab|cd|pq|xy)/).test(input),
-  ])
-  return totalValid(input.split('\n'), isNice)
+
 }
 
 /**
@@ -88,11 +72,8 @@ function part1(input) {
  */
 
 function part2(input) {
-  const isNice = niceChecker([
-    (input) => (/(\w{2}).*\1/).test(input),
-    (input) => (/(\w)\w\1/).test(input)
-  ])
-  return totalValid(input.split('\n'), isNice)
+
 }
 
-module.exports = { part1, part2 }
+// exports.part1 = part1
+// exports.part2 = part2

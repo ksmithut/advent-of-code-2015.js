@@ -10,9 +10,10 @@ exports.part1 = {
       ].join('\n'),
       value: 62842880,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
-  answer: 11171160
+  answer: 11171160,
+  examples: [],
 }

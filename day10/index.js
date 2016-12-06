@@ -47,4 +47,5 @@ function part2(input, iterations = 50) {
 
 }
 
-module.exports = { part1, part2 }
+// exports.part1 = part1
+// exports.part2 = part2

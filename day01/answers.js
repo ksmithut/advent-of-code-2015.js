@@ -12,7 +12,7 @@ exports.part1 = {
     { input: '))(', value: -1 },
     { input: ')))', value: -3 },
     { input: ')())())', value: -3 },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -20,5 +20,5 @@ exports.part2 = {
   examples: [
     { input: ')', value: 1 },
     { input: '()())', value: 5 }
-  ]
+  ],
 }

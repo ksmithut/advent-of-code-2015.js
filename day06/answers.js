@@ -11,7 +11,7 @@ exports.part1 = {
       ].join('\n'),
       value: 998996,
     },
-  ]
+  ],
 }
 
 exports.part2 = {
@@ -19,5 +19,5 @@ exports.part2 = {
   examples: [
     { input: 'turn on 0,0 through 0,0', value: 1 },
     { input: 'toggle 0,0 through 999,999', value: 2000000 },
-  ]
+  ],
 }
