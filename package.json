@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "node advent run",
+    "start": "advent run",
+    "init": "advent init",
     "test:lint": "eslint ."
   },
   "engines": {
@@ -26,5 +27,8 @@
   "devDependencies": {
     "eslint": "^3.11.1",
     "eslint-config-ksmithut": "^2.3.0"
+  },
+  "dependencies": {
+    "advent-of-code": "^1.0.0"
   }
 }
