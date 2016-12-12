@@ -98,13 +98,20 @@ const RUN = {
   },
 }
 
-function part1(input) {
+function runProgram(input, registers) {
   const program = input.split('\n').map(parseLine)
-  const registers = { a: 0, b: 0 }
   for (let i = 0; i < program.length;) {
     const command = program[i]
     i = RUN[command.command](command, registers, i)
   }
+  return registers
+}
+
+function part1(input) {
+  const registers = runProgram(input, {
+    a: 0,
+    b: 0,
+  })
   return registers.b
 }
 
@@ -118,12 +125,10 @@ function part1(input) {
  */
 
 function part2(input) {
-  const program = input.split('\n').map(parseLine)
-  const registers = { a: 1, b: 0 }
-  for (let i = 0; i < program.length;) {
-    const command = program[i]
-    i = RUN[command.command](command, registers, i)
-  }
+  const registers = runProgram(input, {
+    a: 1,
+    b: 0,
+  })
   return registers.b
 }
 
