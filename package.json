@@ -29,6 +29,7 @@
     "eslint-config-ksmithut": "^2.3.0"
   },
   "dependencies": {
-    "advent-of-code": "^1.0.0"
+    "advent-of-code": "^1.0.0",
+    "js-combinatorics": "^0.5.2"
   }
 }
