@@ -5,9 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "advent run",
-    "init": "advent init",
-    "test:lint": "eslint ."
+    "test:lint": "standard"
   },
   "engines": {
     "node": ">=8.0.0"

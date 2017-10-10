@@ -13,11 +13,11 @@ info (input and description) from [adventofcode.com](advent). Set it to the
 value of the "Cookie" header on adventofcode.com after you login.
 
 ```sh
-npm install
-npm run init day1
-npm start day1 part1 'your input'
-npm start day1 part1 + # If you have ADVENT_SESSION set, it will pull input from adventofcode.com
-npm start day1 part1 - < day1.input # Putting in `-` will make it read the input from stdin
+yarn
+yarn advent init day1
+yarn advent run day1 part1 'your input'
+yarn advent run day1 part1 + # If you have ADVENT_SESSION set, it will pull input from adventofcode.com
+yarn advent run day1 part1 - < day1.input # Putting in `-` will make it read the input from stdin
 ```
 
 [advent]: http://adventofcode.com/
