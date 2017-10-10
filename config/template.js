@@ -1,5 +1,7 @@
 'use strict'
 
+const R = require('ramda') // eslint-disable-line no-unused-vars
+
 // Part 1
 // ======
 
