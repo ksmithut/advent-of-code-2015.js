@@ -6,10 +6,10 @@
 // TODO write this util yourself
 const { combination } = require('js-combinatorics')
 
-const sum = (arr) => arr.reduce((total, num) => total + num)
-const product = (arr) => arr.reduce((total, num) => total * num)
+const sum = arr => arr.reduce((total, num) => total + num)
+const product = arr => arr.reduce((total, num) => total * num)
 const sortNums = (a, b) => a - b
-const parseNum = (num) => parseInt(num, 10)
+const parseNum = num => parseInt(num, 10)
 
 const getBestGroup1 = (packages, numGroups) => {
   const total = sum(packages)
@@ -23,17 +23,16 @@ const getBestGroup1 = (packages, numGroups) => {
       if (sum(currCombo) === groupSize) validGroups.push(currCombo)
     }
   }
-  return validGroups
-    .map((combo) => product(combo))
-    .sort(sortNums)[0]
+  return validGroups.map(combo => product(combo)).sort(sortNums)[0]
 }
 
-const getPackages = (input) => input
-  .split('\n')
-  .map(parseNum)
-  .sort(sortNums)
+const getPackages = input =>
+  input
+    .split('\n')
+    .map(parseNum)
+    .sort(sortNums)
 
-function part1(input) {
+function part1 (input) {
   const NUM_GROUPS = 3
   const packages = getPackages(input)
   return getBestGroup1(packages, NUM_GROUPS)
@@ -42,7 +41,7 @@ function part1(input) {
 // Part 2
 // ======
 
-function part2(input) {
+function part2 (input) {
   const NUM_GROUPS = 4
   const packages = getPackages(input)
   return getBestGroup1(packages, NUM_GROUPS)

@@ -3,12 +3,12 @@
 // Part 1
 // ======
 
-const parseInput = (input) => {
-  const [ , row, column ] = input.match(/row (\d+), column (\d+)/)
+const parseInput = input => {
+  const [, row, column] = input.match(/row (\d+), column (\d+)/)
   return { row: parseInt(row, 10), column: parseInt(column, 10) }
 }
 
-const incrementCode = (code) => (code * 252533) % 33554393
+const incrementCode = code => (code * 252533) % 33554393
 
 const getCode = (initCode, searchRow, searchColumn) => {
   let code = initCode
@@ -19,8 +19,7 @@ const getCode = (initCode, searchRow, searchColumn) => {
     if (row === 1) {
       row = column + 1
       column = 1
-    }
-    else {
+    } else {
       column++
       row--
     }
@@ -28,7 +27,7 @@ const getCode = (initCode, searchRow, searchColumn) => {
   return code
 }
 
-function part1(input) {
+function part1 (input) {
   const { row, column } = parseInput(input)
   return getCode(20151125, row, column)
 }
@@ -36,7 +35,7 @@ function part1(input) {
 // Part 2
 // ======
 
-function part2(input) {
+function part2 (input) {
   return input
 }
 

@@ -3,7 +3,7 @@
 // Part 1
 // ======
 
-function part1(input) {
+function part1 (input) {
   const max = parseInt(input, 10)
   const cap = max / 10
   const houses = []
@@ -13,13 +13,13 @@ function part1(input) {
       houses[house] = (houses[house] || 0) + presents
     }
   }
-  return houses.findIndex((presents) => presents >= max)
+  return houses.findIndex(presents => presents >= max)
 }
 
 // Part 2
 // ======
 
-function part2(input) {
+function part2 (input) {
   const max = parseInt(input, 10)
   const cap = max / 10
   const houses = []
@@ -29,7 +29,7 @@ function part2(input) {
       houses[house] = (houses[house] || 0) + presents
     }
   }
-  return houses.findIndex((presents) => presents >= max)
+  return houses.findIndex(presents => presents >= max)
 }
 
 module.exports = { part1, part2 }

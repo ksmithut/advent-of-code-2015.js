@@ -10,24 +10,26 @@
     "test:lint": "eslint ."
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "author": "",
   "license": "ISC",
   "eslintConfig": {
-    "extends": ["standard"],
+    "extends": [
+      "standard"
+    ],
     "root": true
   },
   "adventConfig": {
-    "year": "2015"
+    "year": "2015",
+    "nameTemplate": "src/day{{num}}.js",
+    "templateFile": "config/template.js"
   },
   "devDependencies": {
-    "eslint": "^4.1.1",
-    "eslint-config-ksmithut": "^2.3.0",
-    "standard": "^10.0.2"
+    "standard": "^10.0.3"
   },
   "dependencies": {
-    "advent-of-code": "^2.0.1",
-    "ramda": "^0.24.1"
+    "advent-of-code": "^3.0.1",
+    "ramda": "^0.25.0"
   }
 }

@@ -7,7 +7,17 @@
  * @class Spell
  */
 class Spell {
-  constructor({ cost = 0, damage = 0, heal = 0, armor = 0, recharge = 0, duration = 0 } = {}) { // eslint-disable-line max-len
+  constructor (
+    {
+      cost = 0,
+      damage = 0,
+      heal = 0,
+      armor = 0,
+      recharge = 0,
+      duration = 0
+    } = {}
+  ) {
+    // eslint-disable-line max-len
     this.cost = cost
     this.damage = damage
     this.heal = heal
@@ -15,16 +25,16 @@ class Spell {
     this.recharge = recharge
     this.duration = duration
   }
-  start(source) {
+  start (source) {
     if (this.cost) source.mana -= this.cost
     if (this.armor) source.armor += this.armor
   }
-  run(source, target) {
+  run (source, target) {
     if (this.damage) target.hp -= Math.max(this.damage - target.armor, 1)
     if (this.heal) source.hp += this.heal
     if (this.recharge) source.mana += this.recharge
   }
-  end(source) {
+  end (source) {
     if (this.armor) source.armor -= this.armor
   }
 }
@@ -33,18 +43,18 @@ class Spell {
  * @class Player
  */
 class Player {
-  constructor({ hp = 0, mana = 0 } = {}) {
+  constructor ({ hp = 0, mana = 0 } = {}) {
     this.hp = hp
     this.mana = mana
     this.armor = 0
   }
-  copy() {
+  copy () {
     return new Player(this)
   }
-  isDead() {
+  isDead () {
     return this.hp <= 0
   }
-  canCast(spell) {
+  canCast (spell) {
     return this.mana >= spell.cost
   }
 }
@@ -53,7 +63,7 @@ class Player {
  * @class ActiveSpell
  */
 class ActiveSpell {
-  constructor({ spell, source, target, isCopy = false } = {}) {
+  constructor ({ spell, source, target, isCopy = false } = {}) {
     if (!(spell instanceof Spell)) throw new TypeError('spell not passed in')
     this.spell = spell
     this.source = source
@@ -65,22 +75,22 @@ class ActiveSpell {
       if (this.isDone()) this.run()
     }
   }
-  copy({ source, target }) {
+  copy ({ source, target }) {
     const activeSpell = new ActiveSpell({
       spell: this.spell,
       source,
       target,
-      isCopy: true,
+      isCopy: true
     })
     activeSpell.duration = this.duration
     return activeSpell
   }
-  run() {
+  run () {
     this.spell.run(this.source, this.target)
     this.duration--
     if (this.isDone()) this.spell.end(this.source, this.target)
   }
-  isDone() {
+  isDone () {
     return this.duration <= 0
   }
 }
@@ -89,10 +99,10 @@ class ActiveSpell {
  * @class Simulation
  */
 class Simulation {
-  constructor({ playerHp, playerMana, bossHp, bossDamage } = {}) {
+  constructor ({ playerHp, playerMana, bossHp, bossDamage } = {}) {
     this.player = new Player({
       hp: playerHp,
-      mana: playerMana,
+      mana: playerMana
     })
     this.player.isPlayer = true
     this.boss = new Player({ hp: bossHp })
@@ -101,34 +111,34 @@ class Simulation {
     this.activeSpells = []
     this.spellHistory = []
   }
-  copy() {
+  copy () {
     const newSim = new Simulation({
       playerHp: this.player.hp,
       playerMana: this.player.mana,
       bossHp: this.boss.hp,
-      bossDamage: this.bossDamage,
+      bossDamage: this.bossDamage
     })
     newSim.player.armor = this.player.armor
-    newSim.activeSpells = this.activeSpells.map((spell) => {
+    newSim.activeSpells = this.activeSpells.map(spell => {
       return spell.copy({
         source: newSim.player,
-        target: newSim.boss,
+        target: newSim.boss
       })
     })
     newSim.spellHistory = this.spellHistory.slice()
     return newSim
   }
-  applySpells() {
-    this.activeSpells = this.activeSpells.filter((spell) => {
+  applySpells () {
+    this.activeSpells = this.activeSpells.filter(spell => {
       spell.run()
       return !spell.isDone()
     })
   }
-  castSpell(spell, source, target) {
+  castSpell (spell, source, target) {
     const spellInstance = new ActiveSpell({ spell, source, target })
     if (!spellInstance.isDone()) this.activeSpells.push(spellInstance)
   }
-  playerTurn(spell) {
+  playerTurn (spell) {
     if (!this.player.isDead() && this.player.canCast(spell)) {
       this.castSpell(spell, this.player, this.boss)
       this.spellHistory.push(spell)
@@ -136,11 +146,11 @@ class Simulation {
     }
     return false
   }
-  bossTurn() {
+  bossTurn () {
     if (this.boss.isDead()) return
     this.castSpell(this.bossSpell, this.boss, this.player)
   }
-  run(spell) {
+  run (spell) {
     // this.stats('Player')
     this.applySpells()
     const didCast = this.playerTurn(spell)
@@ -150,15 +160,18 @@ class Simulation {
     this.bossTurn()
     return didCast
   }
-  stats(turn) {
+  stats (turn) {
     console.log(`\n-- ${turn} turn --`)
-    console.log(`- Player has ${this.player.hp} hit points, ${this.player.armor} armor, ${this.player.mana} mana`)
+    console.log(
+      `- Player has ${this.player.hp} hit points, ${this.player
+        .armor} armor, ${this.player.mana} mana`
+    )
     console.log(`- Boss has ${this.boss.hp} hit points`)
   }
-  isDone() {
+  isDone () {
     return this.player.isDead() || this.boss.isDead()
   }
-  didWin() {
+  didWin () {
     return this.boss.isDead()
   }
 }
@@ -176,9 +189,9 @@ const SPELLS = {
   POISON: new Spell({ cost: 173, damage: 3, duration: 6 }),
   SHIELD: new Spell({ cost: 113, duration: 6, armor: 7 }),
   MAGIC_MISSLE: new Spell({ cost: 53, damage: 4 }),
-  DRAIN: new Spell({ cost: 73, damage: 2, heal: 2 }),
+  DRAIN: new Spell({ cost: 73, damage: 2, heal: 2 })
 }
-const SPELLS_ARRAY = Object.keys(SPELLS).map((name) => {
+const SPELLS_ARRAY = Object.keys(SPELLS).map(name => {
   const spell = SPELLS[name]
   spell.name = name
   return spell
@@ -186,26 +199,27 @@ const SPELLS_ARRAY = Object.keys(SPELLS).map((name) => {
 
 const getWinningGames = (prevGame, depth = 0) => {
   if (depth > 12) return []
-  if (prevGame.didWin()) return [ prevGame ]
+  if (prevGame.didWin()) return [prevGame]
   if (prevGame.isDone()) return []
   return SPELLS_ARRAY.reduce((winning, spell) => {
     const newGame = prevGame.copy()
     newGame.run(spell)
-    getWinningGames(newGame, depth + 1).forEach((game) => {
+    getWinningGames(newGame, depth + 1).forEach(game => {
       winning.push(game)
     })
     return winning
   }, [])
 }
 
-const parseInput = (input) => {
-  const [ hp, damage ] = input.split('\n')
-    .map((val) => val.replace(/[^\d]/g, ''))
+const parseInput = input => {
+  const [hp, damage] = input
+    .split('\n')
+    .map(val => val.replace(/[^\d]/g, ''))
     .map(Number)
   return { hp, damage }
 }
 
-function part1(input) {
+function part1 (input) {
   const playerHp = 50
   const playerMana = 500
   const { hp: bossHp, damage: bossDamage } = parseInput(input)
@@ -220,7 +234,7 @@ function part1(input) {
 // Part 2
 // ======
 
-function part2(input) {
+function part2 (input) {
   return input
 }
 

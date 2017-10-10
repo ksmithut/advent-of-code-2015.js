@@ -7,12 +7,12 @@
 
 const ASSIGN = 'ASSIGN'
 const CIRCUIT_REGEX = /(\b[a-z0-9]*\b)? ?(AND|OR|LSHIFT|RSHIFT|NOT)? ?(\b[a-z0-9]*\b)? -> (\w*)$/ // eslint-disable-line max-len
-const parseLine = (line) => {
-  const [ , left, command = ASSIGN, right, signal ] = line.match(CIRCUIT_REGEX)
+const parseLine = line => {
+  const [, left, command = ASSIGN, right, signal] = line.match(CIRCUIT_REGEX)
   return { left, command, right, signal }
 }
 
-const memoize = (fn) => {
+const memoize = fn => {
   const cache = {}
   return (...args) => {
     const hash = JSON.stringify(args)
@@ -23,23 +23,21 @@ const memoize = (fn) => {
   }
 }
 
-const isNumber = (val) => !Number.isNaN(parseInt(val, 10))
+const isNumber = val => !Number.isNaN(parseInt(val, 10))
 const getSignal = (signals, val) => {
-  return isNumber(val)
-    ? () => parseInt(val, 10)
-    : signals[val]
+  return isNumber(val) ? () => parseInt(val, 10) : signals[val]
 }
 
 const ACTIONS = {
-  ASSIGN: (left) => left(),
+  ASSIGN: left => left(),
   AND: (left, right) => left() & right(),
   OR: (left, right) => left() | right(),
   LSHIFT: (left, right) => left() << right(),
   RSHIFT: (left, right) => left() >> right(),
-  NOT: (left, right) => ~right(),
+  NOT: (left, right) => ~right()
 }
 
-const getSignals = (input) => {
+const getSignals = input => {
   return input.split('\n').reduce((acc, line) => {
     const { left, right, command, signal } = parseLine(line)
     acc[signal] = memoize(() => {
@@ -51,7 +49,7 @@ const getSignals = (input) => {
   }, {})
 }
 
-function part1(input) {
+function part1 (input) {
   const signals = getSignals(input)
   return signals.a()
 }
@@ -59,7 +57,7 @@ function part1(input) {
 // Part 2
 // ======
 
-function part2(input) {
+function part2 (input) {
   const signals = getSignals(input)
   signals.b = memoize(() => part1(input))
   return signals.a()

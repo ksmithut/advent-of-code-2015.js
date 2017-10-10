@@ -3,18 +3,18 @@
 // Part 1
 // ======
 
-const sortNums = (arr) => arr.slice().sort((a, b) => a - b)
+const sortNums = arr => arr.slice().sort((a, b) => a - b)
 
-const parseLine = (line) => {
-  const [ , from, to, distance ] = line.match(/^(\w*) to (\w*) = (\d*)/)
+const parseLine = line => {
+  const [, from, to, distance] = line.match(/^(\w*) to (\w*) = (\d*)/)
   return {
     from,
     to,
-    distance: parseInt(distance, 10),
+    distance: parseInt(distance, 10)
   }
 }
 
-const getDistances = (input) => {
+const getDistances = input => {
   return input
     .split('\n')
     .map(parseLine)
@@ -27,13 +27,14 @@ const getDistances = (input) => {
     }, {})
 }
 
-const getPermutations = (arr) => {
-  if (arr.length <= 1) return [ arr ]
+const getPermutations = arr => {
+  if (arr.length <= 1) return [arr]
   return arr.reduce((permutations, val, i) => {
     const subArray = arr.slice()
     subArray.splice(i, 1)
-    const subPermutations = getPermutations(subArray)
-      .map((permutation) => [ val ].concat(permutation))
+    const subPermutations = getPermutations(subArray).map(permutation =>
+      [val].concat(permutation)
+    )
     return permutations.concat(subPermutations)
   }, [])
 }
@@ -45,21 +46,21 @@ const totalRoute = (distances, route) => {
   }, 0)
 }
 
-const getTotals = (input) => {
+const getTotals = input => {
   const distances = getDistances(input)
   const routes = getPermutations(Object.keys(distances))
-  const totals = routes.map((route) => totalRoute(distances, route))
+  const totals = routes.map(route => totalRoute(distances, route))
   return sortNums(totals)
 }
 
-function part1(input) {
+function part1 (input) {
   return getTotals(input)[0]
 }
 
 // Part 2
 // ======
 
-function part2(input) {
+function part2 (input) {
   const sortedTotals = getTotals(input)
   return sortedTotals[sortedTotals.length - 1]
 }

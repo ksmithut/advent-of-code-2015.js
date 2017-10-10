@@ -6,28 +6,28 @@
 const ACTIONS = {
   '^': ({ x, y }) => ({ x, y: y - 1 }),
   '>': ({ x, y }) => ({ x: x + 1, y }),
-  'v': ({ x, y }) => ({ x, y: y + 1 }),
-  '<': ({ x, y }) => ({ x: x - 1, y }),
+  v: ({ x, y }) => ({ x, y: y + 1 }),
+  '<': ({ x, y }) => ({ x: x - 1, y })
 }
 
 const createGrid = () => {
   const visited = {}
   return {
-    visit(pos) {
+    visit (pos) {
       const key = `${pos.x}:${pos.y}`
       visited[key] = (visited[key] || 0) + 1
     },
-    get visited() {
+    get visited () {
       return Object.keys(visited).length
-    },
+    }
   }
 }
 
-function part1(input) {
+function part1 (input) {
   const grid = createGrid()
   let pos = { x: 0, y: 0 }
   grid.visit(pos)
-  input.split('').forEach((instruction) => {
+  input.split('').forEach(instruction => {
     pos = ACTIONS[instruction](pos)
     grid.visit(pos)
   })
@@ -37,7 +37,7 @@ function part1(input) {
 // Part 2
 // ======
 
-const createRotator = (length) => {
+const createRotator = length => {
   let curr = 0
   return () => {
     if (curr >= length) curr = 0
@@ -45,15 +45,12 @@ const createRotator = (length) => {
   }
 }
 
-function part2(input) {
+function part2 (input) {
   const grid = createGrid()
-  const deliverers = [
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-  ]
+  const deliverers = [{ x: 0, y: 0 }, { x: 0, y: 0 }]
   const getNext = createRotator(deliverers.length)
   grid.visit(deliverers[0])
-  input.split('').forEach((instruction) => {
+  input.split('').forEach(instruction => {
     const nextIndex = getNext()
     deliverers[nextIndex] = ACTIONS[instruction](deliverers[nextIndex])
     grid.visit(deliverers[nextIndex])

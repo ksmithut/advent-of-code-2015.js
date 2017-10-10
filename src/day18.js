@@ -6,7 +6,7 @@ const OFF = '.'
 // Part 1
 // ======
 
-const getGrid = (input) => {
+const getGrid = input => {
   const grid = []
   input.split('\n').forEach((line, y) => {
     line.split('').forEach((char, x) => {
@@ -32,16 +32,15 @@ const getNeighbors = (x, y, grid) => {
 
 const nextVal = (x, y, grid) => {
   const val = grid[x][y]
-  const numOn = getNeighbors(x, y, grid)
-    .filter((neighbor) => neighbor === ON)
+  const numOn = getNeighbors(x, y, grid).filter(neighbor => neighbor === ON)
     .length
   if (val === ON) {
-    return (numOn === 2 || numOn === 3) ? ON : OFF
+    return numOn === 2 || numOn === 3 ? ON : OFF
   }
   return numOn === 3 ? ON : OFF
 }
 
-const switchLights = (grid) => {
+const switchLights = grid => {
   const gridCopy = JSON.parse(JSON.stringify(grid))
   return grid.map((col, x) => {
     return col.map((cell, y) => {
@@ -58,7 +57,7 @@ const countGridVal = (grid, val) => {
   }, 0)
 }
 
-function part1(input) {
+function part1 (input) {
   const ITERATIONS = 100
   let grid = getGrid(input)
   for (let i = 0; i < ITERATIONS; i++) {
@@ -76,14 +75,14 @@ const resetPoints = (grid, points, val) => {
   })
 }
 
-function part2(input) {
+function part2 (input) {
   const ITERATIONS = 100
   let grid = getGrid(input)
   const corners = [
     { x: 0, y: 0 },
     { x: 0, y: grid[0].length - 1 },
     { x: grid.length - 1, y: 0 },
-    { x: grid.length - 1, y: grid[0].length - 1 },
+    { x: grid.length - 1, y: grid[0].length - 1 }
   ]
   resetPoints(grid, corners, ON)
   for (let i = 0; i < ITERATIONS; i++) {
