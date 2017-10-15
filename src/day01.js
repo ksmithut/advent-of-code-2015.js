@@ -5,8 +5,8 @@ const R = require('ramda') // eslint-disable-line no-unused-vars
 // Part 1
 // ======
 
-const UP = R.equals('(')
-const DOWN = R.equals(')')
+const UP = '('
+const DOWN = ')'
 const FIRST_FLOOR = 0
 const INITIAL_STATE = {
   index: 0,
@@ -15,8 +15,8 @@ const INITIAL_STATE = {
 
 const step = R.curry((floor, instruction) => {
   return R.cond([
-    [UP, R.always(R.inc(floor))],
-    [DOWN, R.always(R.dec(floor))],
+    [R.equals(UP), R.always(R.inc(floor))],
+    [R.equals(DOWN), R.always(R.dec(floor))],
     [R.T, R.always(floor)]
   ])(instruction)
 })
